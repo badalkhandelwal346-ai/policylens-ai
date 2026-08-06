@@ -9,6 +9,12 @@
   --color-brand-card: var(--brand-card);
   --color-brand-muted: var(--brand-muted);
   --color-brand-muted-foreground: var(--brand-muted-foreground);
+  --color-business-section: var(--business-section);
+  --color-business-field: var(--business-field);
+  --color-business-field-border: var(--business-field-border);
+  --color-business-label: var(--business-label);
+  --color-business-field-text: var(--business-field-text);
+  --color-business-heading: var(--business-heading);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
@@ -57,6 +63,12 @@
   --brand-card: oklch(0.97 0.008 80);
   --brand-muted: oklch(0.96 0.005 260);
   --brand-muted-foreground: oklch(0.52 0.025 250);
+  --business-section: oklch(0.98 0.004 90);
+  --business-field: oklch(1 0 0);
+  --business-field-border: oklch(0.922 0.006 250);
+  --business-label: oklch(0.52 0.015 250);
+  --business-field-text: oklch(0.32 0.02 250);
+  --business-heading: oklch(0.28 0.04 250);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
