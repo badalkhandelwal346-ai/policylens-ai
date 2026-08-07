@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+
 import { AssistantHeader } from "./assistant-header";
 import { BottomNavigation } from "./bottom-navigation";
 import { ChatMessage } from "./chat-message";
@@ -7,7 +9,7 @@ import { GreetingSection } from "./greeting-section";
 import { InputToolbar } from "./input-toolbar";
 import { TypingIndicator } from "./typing-indicator";
 
-const mockMessages = [
+const initialMessages = [
   {
     id: "msg-1",
     role: "assistant" as const,
@@ -29,6 +31,80 @@ const mockMessages = [
 ];
 
 export function AssistantPage() {
+  const [messages, setMessages] = useState(initialMessages);
+  const [inputValue, setInputValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!scrollRef.current) return;
+    scrollRef.current.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [messages, isLoading]);
+
+  const sendMessage = async () => {
+    const trimmedValue = inputValue.trim();
+    if (!trimmedValue || isLoading) return;
+
+    const userMessage = {
+      id: `user-${Date.now()}`,
+      role: "user" as const,
+      content: trimmedValue,
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInputValue("");
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: trimmedValue }),
+      });
+
+      const responseData = await response.json();
+      const reply =
+        response.ok && typeof responseData.reply === "string"
+          ? responseData.reply.trim()
+          : "Sorry, I couldn't process that request right now. Please try again.";
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `assistant-${Date.now()}`,
+          role: "assistant",
+          content: reply,
+        },
+      ]);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `assistant-error-${Date.now()}`,
+          role: "assistant",
+          content:
+            "Sorry, I couldn't connect to the assistant at the moment. Please try again.",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    await sendMessage();
+  };
+
+  const handleSelectPrompt = (prompt: string) => {
+    setInputValue(prompt);
+  };
+
   return (
     <div className="flex h-dvh max-h-dvh flex-col items-center justify-center bg-slate-50/50 sm:p-4 md:p-6 overflow-hidden">
       <main className="relative flex h-full max-h-dvh w-full max-w-md flex-col overflow-hidden bg-white sm:h-[840px] sm:max-h-[90vh] sm:max-w-2xl sm:rounded-3xl sm:border sm:border-slate-100 sm:shadow-xl">
@@ -38,7 +114,10 @@ export function AssistantPage() {
         </div>
 
         {/* Scrollable Conversation Container */}
-        <div className="relative flex-1 min-h-0 overflow-y-auto px-4 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div
+          ref={scrollRef}
+          className="relative flex-1 min-h-0 overflow-y-auto px-4 py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        >
           {/* Subtle Node/Network Background Graphic */}
           <div
             aria-hidden="true"
@@ -75,7 +154,7 @@ export function AssistantPage() {
 
             {/* Chat Messages */}
             <div className="flex flex-col gap-3 pt-1">
-              {mockMessages.map((msg) => (
+              {messages.map((msg) => (
                 <ChatMessage
                   key={msg.id}
                   id={msg.id}
@@ -84,15 +163,20 @@ export function AssistantPage() {
                 />
               ))}
 
-              {/* Typing Indicator */}
-              <TypingIndicator />
+              {isLoading && <TypingIndicator />}
             </div>
           </div>
         </div>
 
         {/* Fixed Bottom Input Area & Navigation Spacer */}
         <div className="shrink-0 bg-white border-t border-slate-100/80 z-20 pb-16">
-          <InputToolbar />
+          <InputToolbar
+            inputValue={inputValue}
+            disabled={isLoading}
+            onInputChange={(e) => setInputValue(e.target.value)}
+            onSubmit={handleSubmit}
+            onSelectPrompt={handleSelectPrompt}
+          />
         </div>
 
         {/* Shared Bottom Navigation */}
