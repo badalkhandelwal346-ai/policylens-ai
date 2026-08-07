@@ -1,8 +1,78 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 
+import policies from "@/data/policies.json";
+import alertsData from "@/data/alerts.json";
+
 const API_KEY = process.env.GEMINI_API_KEY;
 const MODEL_ID = "gemini-3.6-flash";
+
+function buildPolicyLensContext() {
+  const policySummaries = [
+    ...policies.urgentPolicies.map((policy) => ({
+      id: policy.id,
+      title: policy.title,
+      description: policy.description,
+      status: policy.status,
+      category: policy.category,
+      source: policy.source,
+      eligibility: policy.eligibility,
+      benefits: policy.benefits,
+      deadline: policy.deadline,
+      readTime: policy.readTime,
+      badge: policy.badge,
+    })),
+    ...policies.recommendedPolicies.map((policy) => ({
+      id: policy.id,
+      title: policy.title,
+      description: policy.description,
+      status: policy.status,
+      category: policy.category,
+      source: policy.source,
+      eligibility: policy.eligibility,
+      benefits: policy.benefits,
+      deadline: policy.deadline,
+      readTime: policy.readTime,
+      badge: policy.badge,
+      showExplore: policy.showExplore,
+    })),
+  ];
+
+  const alerts = alertsData.alerts.map((alert) => ({
+    id: alert.id,
+    title: alert.title,
+    priority: alert.priority,
+    deadline: alert.deadline,
+    category: alert.category,
+    aiConfidence: alert.aiConfidence,
+  }));
+
+  const upcomingDeadlines = alertsData.upcomingDeadlines.map((deadline) => ({
+    month: deadline.month,
+    day: deadline.day,
+    title: deadline.title,
+    subtitle: deadline.subtitle,
+  }));
+
+  return `PolicyLens data:
+
+Policies:
+${JSON.stringify(policySummaries, null, 2)}
+
+Alerts:
+${JSON.stringify(alerts, null, 2)}
+
+Upcoming deadlines:
+${JSON.stringify(upcomingDeadlines, null, 2)}
+`;
+}
+
+const SYSTEM_INSTRUCTION = `You are the PolicyLens AI assistant.
+Use the supplied PolicyLens data when the question relates to it.
+Do not invent policy names, deadlines, benefits, or eligibility requirements.
+If the supplied data does not contain the answer, clearly say that the available PolicyLens data does not provide enough information.
+Give simple, understandable answers.
+Do not claim to have accessed live government websites unless the application actually does so.`;
 
 export async function POST(request: NextRequest) {
   if (!API_KEY) {
@@ -40,7 +110,22 @@ export async function POST(request: NextRequest) {
 
     const response = await ai.models.generateContent({
       model: MODEL_ID,
-      contents: message.trim(),
+      contents: [
+        {
+          role: "MODEL",
+          parts: [
+            {
+              text: `${SYSTEM_INSTRUCTION}
+
+${buildPolicyLensContext()}`,
+            },
+          ],
+        },
+        {
+          role: "USER",
+          parts: [{ text: message.trim() }],
+        },
+      ],
       config: {
         maxOutputTokens: 512,
       },
@@ -56,7 +141,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ reply });
   } catch (error) {
+    console.error("/api/chat error:", error);
     const message = error instanceof Error ? error.message : "Unknown error";
+    console.error("/api/chat error message:", message);
     return NextResponse.json(
       { error: `Gemini request failed: ${message}` },
       { status: 500 },

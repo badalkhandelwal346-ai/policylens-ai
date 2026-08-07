@@ -4,39 +4,71 @@
       "id": "digital-markets-act",
       "badge": "high-impact",
       "title": "Digital Markets Act: Section 4 Amendment",
-      "deadline": "Oct 24, 2023",
-      "readTime": "8 min read"
+      "deadline": "Oct 30, 2026",
+      "readTime": "8 min read",
+      "description": "A demo policy update focused on platform interoperability and fair access for smaller digital service providers.",
+      "status": "Draft review",
+      "category": "Digital Markets",
+      "source": "Department of Commerce",
+      "eligibility": "Applies to digital platforms and online intermediaries operating within the sample regulatory framework.",
+      "benefits": "Aims to improve competition and transparency for small vendors and customers through access and reporting requirements."
     },
     {
       "id": "national-ai-safety",
       "badge": "strategic",
       "title": "National AI Safety Framework 2.0",
-      "deadline": "Oct 30, 2023",
-      "readTime": "12 min read"
+      "deadline": "Nov 15, 2026",
+      "readTime": "12 min read",
+      "description": "A demo framework for safety expectations in AI systems used by regulated industries.",
+      "status": "Consultation phase",
+      "category": "Artificial Intelligence",
+      "source": "National AI Council",
+      "eligibility": "Relevant for organizations deploying AI systems in finance, healthcare, or public services under the sample regime.",
+      "benefits": "Supports safer AI adoption through transparency, oversight, and risk management guidance."
     }
   ],
   "recommendedPolicies": [
     {
       "id": "sustainable-finance",
       "title": "Sustainable Finance Disclosure Measures",
-      "description": "Key metrics for entities operating with sustainability mandates.",
-      "showExplore": true
+      "description": "A demo policy that outlines disclosure expectations for sustainability reporting in finance.",
+      "deadline": "Dec 31, 2026",
+      "readTime": "10 min read",
+      "badge": "AI ANALYSIS",
+      "showExplore": true,
+      "status": "Recommended",
+      "category": "Sustainable Finance",
+      "source": "Ministry of Finance",
+      "eligibility": "Applies to financial institutions with sustainability-linked products.",
+      "benefits": "Improves investor confidence and supports green capital allocation."
     },
     {
       "id": "net-zero",
       "badge": "AI ANALYSIS",
       "title": "Net-Zero Infrastructure Act",
-      "description": "Critical infrastructure and incentive structures for carbon neutrality.",
+      "deadline": "Jan 15, 2027",
       "readTime": "18 min read",
-      "showExplore": false
+      "description": "A demo policy focused on infrastructure investment and incentives to reduce emissions.",
+      "showExplore": false,
+      "status": "Under consideration",
+      "category": "Climate Action",
+      "source": "Ministry of Energy",
+      "eligibility": "Targets infrastructure projects with net-zero commitments.",
+      "benefits": "Encourages cleaner energy investments and long-term emissions reduction."
     },
     {
       "id": "digital-trade",
       "badge": "AI ANALYSIS",
       "title": "Digital Trade Facilitation Act",
-      "description": "Streamlining cross-border e-commerce compliance and tax obligations.",
+      "deadline": "Mar 31, 2027",
       "readTime": "11 min read",
-      "showExplore": false
+      "description": "A demo policy streamlining cross-border digital commerce and regulatory compliance.",
+      "showExplore": false,
+      "status": "Recommended",
+      "category": "Trade",
+      "source": "Commerce and Trade Agency",
+      "eligibility": "Applies to businesses engaged in international digital goods and services.",
+      "benefits": "Simplifies compliance and reduces friction for cross-border e-commerce."
     }
   ]
 }
