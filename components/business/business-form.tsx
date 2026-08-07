@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BarChart3, BellRing, Store } from "lucide-react";
 
 import { BusinessInput } from "@/components/business/business-input";
@@ -9,7 +9,11 @@ import { Dropdown } from "@/components/business/dropdown";
 import { NotificationCard } from "@/components/business/notification-card";
 import { SectionHeader } from "@/components/business/section-header";
 import { Button } from "@/components/ui/button";
-import { BUSINESS_PROFILE_KEY, saveLocalStorageItem } from "@/lib/local-storage";
+import {
+  BUSINESS_PROFILE_KEY,
+  readLocalStorageItem,
+  saveLocalStorageItem,
+} from "@/lib/local-storage";
 
 const notificationPreferences = [
   {
@@ -39,7 +43,10 @@ type BusinessProfile = {
   stateOfOperation: string;
   primaryLanguage: string;
   businessSize: string;
+  notificationPreferences?: string[];
 };
+
+type NotificationPreference = (typeof notificationPreferences)[number];
 
 const businessTypes = [
   "Sole Proprietorship",
@@ -64,7 +71,7 @@ const states = [
   "Illinois",
 ];
 
-const languages = ["English", "Spanish", "French", "German"];
+const languages = ["English", "Hindi"];
 
 const businessSizes = [
   "1-10 employees",
@@ -80,6 +87,35 @@ export function BusinessForm() {
   const [stateOfOperation, setStateOfOperation] = useState(states[0]);
   const [primaryLanguage, setPrimaryLanguage] = useState(languages[0]);
   const [businessSize, setBusinessSize] = useState(businessSizes[0]);
+  const [notificationSelections, setNotificationSelections] = useState<string[]>(
+    notificationPreferences
+      .filter((preference) => preference.selected)
+      .map((preference) => preference.title),
+  );
+
+  useEffect(() => {
+    const savedProfile = readLocalStorageItem<BusinessProfile>(
+      BUSINESS_PROFILE_KEY,
+    );
+
+    if (savedProfile) {
+      setBusinessName(savedProfile.businessName ?? "");
+      setBusinessType(savedProfile.businessType ?? businessTypes[0]);
+      setIndustry(savedProfile.industry ?? industries[0]);
+      setStateOfOperation(savedProfile.stateOfOperation ?? states[0]);
+      setPrimaryLanguage(savedProfile.primaryLanguage ?? languages[0]);
+      setBusinessSize(savedProfile.businessSize ?? businessSizes[0]);
+      setNotificationSelections(savedProfile.notificationPreferences ?? notificationPreferences.filter((preference) => preference.selected).map((preference) => preference.title));
+    }
+  }, []);
+
+  const handleToggleNotificationPreference = (title: string) => {
+    setNotificationSelections((current) =>
+      current.includes(title)
+        ? current.filter((item) => item !== title)
+        : [...current, title],
+    );
+  };
 
   const handleContinue = (event: React.MouseEvent<HTMLAnchorElement>) => {
     const profile: BusinessProfile = {
@@ -89,6 +125,7 @@ export function BusinessForm() {
       stateOfOperation,
       primaryLanguage,
       businessSize,
+      notificationPreferences: notificationSelections,
     };
 
     const saved = saveLocalStorageItem(BUSINESS_PROFILE_KEY, profile);
@@ -149,7 +186,18 @@ export function BusinessForm() {
         <SectionHeader icon={BellRing} title="Notification Preferences" />
         <div className="flex flex-col gap-2.5">
           {notificationPreferences.map((preference) => (
-            <NotificationCard key={preference.title} {...preference} />
+            <button
+              key={preference.title}
+              type="button"
+              onClick={() => handleToggleNotificationPreference(preference.title)}
+              className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-navy/40 focus-visible:ring-offset-2 focus-visible:ring-offset-business-section"
+            >
+              <NotificationCard
+                title={preference.title}
+                description={preference.description}
+                selected={notificationSelections.includes(preference.title)}
+              />
+            </button>
           ))}
         </div>
       </section>
