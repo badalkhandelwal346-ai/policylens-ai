@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useMemo, useState } from "react";
 import { Bell, User } from "lucide-react";
 
 import { ActionRequired } from "@/components/dashboard/action-required";
@@ -12,7 +15,62 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/landing/logo";
 import policies from "@/data/policies.json";
 
+function matchesPolicy(policy: Record<string, string | undefined>, term: string) {
+  return Object.values(policy).some(
+    (value) => value?.toLowerCase().includes(term),
+  );
+}
+
 export function DashboardPage() {
+  const [search, setSearch] = useState("");
+  const normalizedSearch = search.trim().toLowerCase();
+
+  const filteredUrgentPolicies = useMemo(() => {
+    if (!normalizedSearch) {
+      return policies.urgentPolicies;
+    }
+
+    return policies.urgentPolicies.filter((policy) =>
+      matchesPolicy(
+        {
+          title: policy.title,
+          description: policy.description,
+          category: policy.category,
+          badge: policy.badge,
+          status: policy.status,
+          source: policy.source,
+          eligibility: policy.eligibility,
+          benefits: policy.benefits,
+          deadline: policy.deadline,
+        },
+        normalizedSearch,
+      ),
+    );
+  }, [normalizedSearch]);
+
+  const filteredRecommendedPolicies = useMemo(() => {
+    if (!normalizedSearch) {
+      return policies.recommendedPolicies;
+    }
+
+    return policies.recommendedPolicies.filter((policy) =>
+      matchesPolicy(
+        {
+          title: policy.title,
+          description: policy.description,
+          category: policy.category,
+          badge: policy.badge,
+          status: policy.status,
+          source: policy.source,
+          eligibility: policy.eligibility,
+          benefits: policy.benefits,
+          deadline: policy.deadline,
+        },
+        normalizedSearch,
+      ),
+    );
+  }, [normalizedSearch]);
+
   return (
     <div className="relative mx-auto flex min-h-full w-full max-w-md flex-col bg-white pb-24 sm:max-w-lg">
       {/* Header */}
@@ -46,7 +104,7 @@ export function DashboardPage() {
       <Greeting name="Rajesh" />
 
       {/* Search */}
-      <SearchBar />
+      <SearchBar value={search} onChange={setSearch} />
 
       {/* Urgent Policies */}
       <section className="px-4 pt-6">
@@ -59,16 +117,17 @@ export function DashboardPage() {
               Urgent Policies
             </h2>
           </div>
-          <button
+          <Link
+            href="/policy"
             id="urgent-view-all-btn"
             className="text-sm font-medium text-brand-muted-foreground hover:text-brand-navy"
           >
             View all
-          </button>
+          </Link>
         </div>
 
         <div className="flex flex-col gap-3">
-          {policies.urgentPolicies.map((policy) => (
+          {filteredUrgentPolicies.map((policy) => (
             <UrgentPolicyCard
               key={policy.id}
               badge={policy.badge as "high-impact" | "strategic" | "ai-analysis"}
@@ -84,7 +143,7 @@ export function DashboardPage() {
       <UpcomingDeadlines />
 
       {/* Recommended Policies */}
-      <RecommendedPolicies />
+      <RecommendedPolicies policies={filteredRecommendedPolicies} />
 
       {/* Action Required */}
       <ActionRequired />

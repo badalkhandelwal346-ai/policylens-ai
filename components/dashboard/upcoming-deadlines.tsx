@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import alertsData from "@/data/alerts.json";
 
@@ -9,6 +12,8 @@ type DeadlineItem = {
 };
 
 export function UpcomingDeadlines() {
+  const router = useRouter();
+
   return (
     <section className="px-4 pt-8 pb-2">
       <h2 className="mb-3 text-xl font-bold tracking-tight text-brand-navy">
@@ -48,6 +53,7 @@ export function UpcomingDeadlines() {
           <Button
             id="view-calendar-btn"
             variant="outline"
+            onClick={() => router.push("/alerts")}
             className="h-11 w-full rounded-xl border-[oklch(0.91_0.008_250)] bg-white text-sm font-semibold text-brand-navy hover:bg-brand-muted"
           >
             View Calendar

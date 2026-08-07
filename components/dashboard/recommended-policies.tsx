@@ -6,7 +6,11 @@ import { useRef } from "react";
 import { PolicyCard } from "@/components/dashboard/policy-card";
 import policies from "@/data/policies.json";
 
-export function RecommendedPolicies() {
+type RecommendedPoliciesProps = {
+  policies: typeof policies.recommendedPolicies;
+};
+
+export function RecommendedPolicies({ policies }: RecommendedPoliciesProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: "left" | "right") => {
@@ -49,7 +53,7 @@ export function RecommendedPolicies() {
         ref={scrollRef}
         className="flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {policies.recommendedPolicies.map((policy) => (
+        {policies.map((policy) => (
           <PolicyCard
             key={policy.id}
             badge={policy.badge}

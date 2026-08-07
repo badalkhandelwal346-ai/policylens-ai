@@ -1,4 +1,7 @@
+"use client";
+
 import { FileEdit, PenSquare } from "lucide-react";
+import { useRouter } from "next/navigation";
 import type { ElementType } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -35,6 +38,8 @@ const actions: ActionItem[] = [
 ];
 
 export function ActionRequired() {
+  const router = useRouter();
+
   return (
     <section className="px-4 pt-8 pb-4">
       <h2 className="mb-3 text-xl font-bold tracking-tight text-brand-navy">
@@ -68,6 +73,7 @@ export function ActionRequired() {
 
               <Button
                 id={`action-${action.id}-btn`}
+                onClick={() => router.push("/policy")}
                 className={cn(
                   "h-12 shrink-0 rounded-xl px-4 text-sm font-semibold",
                   action.variant === "primary"
