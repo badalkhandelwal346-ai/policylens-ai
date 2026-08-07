@@ -1,3 +1,7 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Bell, Bot, FileText, Home, User } from "lucide-react";
 import type { ElementType } from "react";
 
@@ -7,18 +11,20 @@ type NavItem = {
   id: string;
   label: string;
   icon: ElementType;
-  active?: boolean;
+  href: string;
 };
 
 const navItems: NavItem[] = [
-  { id: "nav-home", label: "Home", icon: Home, active: true },
-  { id: "nav-policies", label: "Policies", icon: FileText },
-  { id: "nav-assistant", label: "Assistant", icon: Bot },
-  { id: "nav-alerts", label: "Alerts", icon: Bell },
-  { id: "nav-profile", label: "Profile", icon: User },
+  { id: "nav-home", label: "Home", icon: Home, href: "/dashboard" },
+  { id: "nav-policies", label: "Policies", icon: FileText, href: "/policy" },
+  { id: "nav-assistant", label: "Assistant", icon: Bot, href: "/assistant" },
+  { id: "nav-alerts", label: "Alerts", icon: Bell, href: "/alerts" },
+  { id: "nav-profile", label: "Profile", icon: User, href: "/profile" },
 ];
 
 export function BottomNavigation() {
+  const pathname = usePathname();
+
   return (
     <nav
       aria-label="Main navigation"
@@ -27,16 +33,21 @@ export function BottomNavigation() {
       <ul className="flex items-center justify-around py-2" role="list">
         {navItems.map((item) => {
           const Icon = item.icon;
+          const isActive =
+            item.href === "/dashboard"
+              ? pathname === "/dashboard" || pathname === "/"
+              : pathname?.startsWith(item.href);
 
           return (
             <li key={item.id}>
-              <button
+              <Link
                 id={item.id}
+                href={item.href}
                 aria-label={item.label}
-                aria-current={item.active ? "page" : undefined}
+                aria-current={isActive ? "page" : undefined}
                 className={cn(
                   "flex flex-col items-center gap-1 px-3 py-1 text-xs font-medium transition-colors",
-                  item.active
+                  isActive
                     ? "text-brand-navy"
                     : "text-brand-muted-foreground hover:text-brand-navy",
                 )}
@@ -44,12 +55,12 @@ export function BottomNavigation() {
                 <Icon
                   className={cn(
                     "size-5",
-                    item.active && "stroke-[2.25px]",
+                    isActive && "stroke-[2.25px]",
                   )}
                   aria-hidden="true"
                 />
                 <span>{item.label}</span>
-              </button>
+              </Link>
             </li>
           );
         })}
@@ -57,3 +68,4 @@ export function BottomNavigation() {
     </nav>
   );
 }
+
