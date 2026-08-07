@@ -28,7 +28,7 @@ export function PolicyCard({
     >
       <article
         className={cn(
-          "flex w-52 flex-col justify-between rounded-2xl bg-brand-card p-4",
+          "flex h-64 w-52 flex-col justify-between rounded-2xl bg-brand-card p-4",
           className,
         )}
       >

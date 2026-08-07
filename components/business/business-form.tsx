@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { BarChart3, BellRing, Store } from "lucide-react";
 
 import { BusinessInput } from "@/components/business/business-input";
@@ -63,9 +64,11 @@ export function BusinessForm() {
         >
           Back
         </Button>
-        <Button className="h-12 flex-[1.4] rounded-xl bg-brand-navy text-sm font-semibold hover:bg-brand-navy/90">
-          Continue
-        </Button>
+        <Link href="/dashboard" className="flex-[1.4]">
+          <Button className="h-12 w-full rounded-xl bg-brand-navy text-sm font-semibold hover:bg-brand-navy/90">
+            Continue
+          </Button>
+        </Link>
       </div>
     </div>
   );

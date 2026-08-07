@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowLeft, Bell, ScanSearch } from "lucide-react";
 
 import { BusinessForm } from "@/components/business/business-form";
@@ -8,13 +9,15 @@ export default function BusinessPage() {
   return (
     <div className="mx-auto min-h-full w-full max-w-md bg-white sm:max-w-lg">
       <header className="relative flex items-center justify-between px-4 py-4">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="size-9 text-brand-navy hover:bg-brand-muted"
-        >
-          <ArrowLeft className="size-5" aria-hidden="true" />
-        </Button>
+        <Link href="/">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-9 text-brand-navy hover:bg-brand-muted"
+          >
+            <ArrowLeft className="size-5" aria-hidden="true" />
+          </Button>
+        </Link>
 
         <div className="absolute left-1/2 flex -translate-x-1/2 items-center gap-1.5">
           <ScanSearch
