@@ -12,6 +12,7 @@ export function LogoutButton() {
       label="Logout"
       isDestructive={true}
       showChevron={true}
+      href="/"
     />
   );
 }

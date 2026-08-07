@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Bell, User } from "lucide-react";
 
 import { ActionRequired } from "@/components/dashboard/action-required";
@@ -34,23 +35,26 @@ export function DashboardPage() {
       <header className="flex items-center justify-between px-4 pt-5 pb-2">
         <Logo />
         <div className="flex items-center gap-3">
-          <Button
-            id="dashboard-bell-btn"
-            variant="ghost"
-            size="icon"
-            className="size-9 text-brand-navy hover:bg-brand-muted"
-            aria-label="Notifications"
-          >
-            <Bell className="size-5" aria-hidden="true" />
-          </Button>
+          <Link href="/alerts">
+            <Button
+              id="dashboard-bell-btn"
+              variant="ghost"
+              size="icon"
+              className="size-9 text-brand-navy hover:bg-brand-muted"
+              aria-label="Notifications"
+            >
+              <Bell className="size-5" aria-hidden="true" />
+            </Button>
+          </Link>
 
-          <button
+          <Link
             id="dashboard-avatar-btn"
+            href="/profile"
             aria-label="Profile"
             className="flex size-9 items-center justify-center overflow-hidden rounded-full bg-brand-navy text-white"
           >
             <User className="size-5" aria-hidden="true" />
-          </button>
+          </Link>
         </div>
       </header>
 
@@ -102,8 +106,9 @@ export function DashboardPage() {
       <ActionRequired />
 
       {/* FAB */}
-      <button
+      <Link
         id="dashboard-fab-btn"
+        href="/assistant"
         aria-label="Open AI assistant"
         className="fixed right-4 bottom-24 z-50 flex size-14 items-center justify-center rounded-full bg-brand-navy shadow-lg transition-transform hover:scale-105 active:scale-95"
       >
@@ -115,7 +120,7 @@ export function DashboardPage() {
             />
           ))}
         </span>
-      </button>
+      </Link>
 
       {/* Bottom Navigation */}
       <BottomNavigation />

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Bot, ExternalLink } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -13,14 +14,16 @@ export function ActionButtons() {
         View Official Notification
       </Button>
 
-      <Button
-        id="policy-ask-ai-btn"
-        variant="outline"
-        className="h-11 gap-2 rounded-xl border-[oklch(0.91_0.008_250)] bg-white px-5 text-sm font-semibold text-brand-navy hover:bg-brand-muted"
-      >
-        <Bot className="size-4" aria-hidden="true" />
-        Ask AI
-      </Button>
+      <Link href="/assistant">
+        <Button
+          id="policy-ask-ai-btn"
+          variant="outline"
+          className="h-11 gap-2 rounded-xl border-[oklch(0.91_0.008_250)] bg-white px-5 text-sm font-semibold text-brand-navy hover:bg-brand-muted"
+        >
+          <Bot className="size-4" aria-hidden="true" />
+          Ask AI
+        </Button>
+      </Link>
     </div>
   );
 }

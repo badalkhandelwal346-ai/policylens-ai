@@ -28,15 +28,17 @@ export function AssistantHeader() {
         <Logo />
       </div>
 
-      <Button
-        id="assistant-bell-btn"
-        variant="ghost"
-        size="icon"
-        className="size-9 text-brand-navy hover:bg-brand-muted cursor-pointer"
-        aria-label="Notifications"
-      >
-        <Bell className="size-5" aria-hidden="true" />
-      </Button>
+      <Link href="/alerts">
+        <Button
+          id="assistant-bell-btn"
+          variant="ghost"
+          size="icon"
+          className="size-9 text-brand-navy hover:bg-brand-muted cursor-pointer"
+          aria-label="Notifications"
+        >
+          <Bell className="size-5" aria-hidden="true" />
+        </Button>
+      </Link>
     </header>
   );
 }

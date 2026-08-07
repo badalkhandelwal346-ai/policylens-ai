@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Bot, ExternalLink } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -13,13 +14,15 @@ export function BottomStickyActions() {
         View Official Notification
       </Button>
 
-      <Button
-        id="mobile-ask-ai-btn"
-        className="h-11 w-full gap-2 rounded-xl bg-[oklch(0.48_0.14_165)] text-sm font-semibold text-white hover:opacity-95"
-      >
-        <Bot className="size-4" aria-hidden="true" />
-        Ask AI Assistant
-      </Button>
+      <Link href="/assistant" className="w-full">
+        <Button
+          id="mobile-ask-ai-btn"
+          className="h-11 w-full gap-2 rounded-xl bg-[oklch(0.48_0.14_165)] text-sm font-semibold text-white hover:opacity-95"
+        >
+          <Bot className="size-4" aria-hidden="true" />
+          Ask AI Assistant
+        </Button>
+      </Link>
     </div>
   );
 }

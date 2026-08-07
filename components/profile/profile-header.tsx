@@ -23,15 +23,17 @@ export function ProfileHeader() {
 
       <Logo />
 
-      <Button
-        id="profile-bell-btn"
-        variant="ghost"
-        size="icon"
-        className="size-9 text-brand-navy hover:bg-brand-muted cursor-pointer"
-        aria-label="Notifications"
-      >
-        <Bell className="size-5" aria-hidden="true" />
-      </Button>
+      <Link href="/alerts">
+        <Button
+          id="profile-bell-btn"
+          variant="ghost"
+          size="icon"
+          className="size-9 text-brand-navy hover:bg-brand-muted cursor-pointer"
+          aria-label="Notifications"
+        >
+          <Bell className="size-5" aria-hidden="true" />
+        </Button>
+      </Link>
     </header>
   );
 }
