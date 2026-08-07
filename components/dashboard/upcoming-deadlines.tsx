@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import alertsData from "@/data/alerts.json";
 
 type DeadlineItem = {
   month: string;
@@ -6,21 +7,6 @@ type DeadlineItem = {
   title: string;
   subtitle: string;
 };
-
-const deadlines: DeadlineItem[] = [
-  {
-    month: "OCT",
-    day: "25",
-    title: "Cyber Resilience Audit",
-    subtitle: "Quarterly Compliance Review",
-  },
-  {
-    month: "OCT",
-    day: "28",
-    title: "Data Privacy Report",
-    subtitle: "GDPR Recalibration Submission",
-  },
-];
 
 export function UpcomingDeadlines() {
   return (
@@ -30,7 +16,7 @@ export function UpcomingDeadlines() {
       </h2>
 
       <div className="rounded-2xl border border-[oklch(0.91_0.008_250)] bg-white shadow-sm">
-        {deadlines.map((item, index) => (
+        {alertsData.upcomingDeadlines.map((item, index) => (
           <div key={item.title}>
             <div className="flex items-center gap-4 p-4">
               <div className="flex w-12 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-card py-2 text-center">
@@ -52,7 +38,7 @@ export function UpcomingDeadlines() {
               </div>
             </div>
 
-            {index < deadlines.length - 1 && (
+            {index < alertsData.upcomingDeadlines.length - 1 && (
               <div className="mx-4 border-t border-[oklch(0.93_0.006_250)]" />
             )}
           </div>

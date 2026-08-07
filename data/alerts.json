@@ -1,0 +1,57 @@
+{
+  "alerts": [
+    {
+      "id": "gst-update",
+      "iconType": "document",
+      "title": "New GST Update",
+      "priority": "HIGH PRIORITY",
+      "description": "Significant changes to Input Tax Credit (ITC) norms for tech service providers effective from the next fiscal quarter. Potential impact on operational margins exceeds 2.4%.",
+      "impactScore": "8.5/10",
+      "deadline": "15 Oct 2024",
+      "category": "Taxation",
+      "aiConfidence": "98% Match",
+      "primaryActionLabel": "View Analysis",
+      "secondaryActionLabel": "Dismiss"
+    },
+    {
+      "id": "msme-scheme",
+      "iconType": "bot",
+      "title": "New MSME Scheme",
+      "priority": "STANDARD",
+      "description": "Ministry of Micro, Small and Medium Enterprises announces digital transformation grants for registered entities in the manufacturing sector.",
+      "impactScore": "4.2/10",
+      "deadline": "30 Nov 2024",
+      "category": "Grants",
+      "aiConfidence": "72% Match",
+      "primaryActionLabel": "Apply Now",
+      "secondaryActionLabel": "Save for later"
+    },
+    {
+      "id": "data-privacy-amendment",
+      "iconType": "shield",
+      "title": "Data Privacy Amendment",
+      "priority": "HIGH PRIORITY",
+      "description": "Proposed amendments to the Digital Personal Data Protection Act focus on cross-border data transfer compliance. Requires immediate legal audit for international operations.",
+      "impactScore": "9.1/10",
+      "deadline": "05 Oct 2024",
+      "category": "Legal",
+      "aiConfidence": "100% Match",
+      "primaryActionLabel": "Audit Checklist",
+      "secondaryActionLabel": "Dismiss"
+    }
+  ],
+  "upcomingDeadlines": [
+    {
+      "month": "OCT",
+      "day": "25",
+      "title": "Cyber Resilience Audit",
+      "subtitle": "Quarterly Compliance Review"
+    },
+    {
+      "month": "OCT",
+      "day": "28",
+      "title": "Data Privacy Report",
+      "subtitle": "GDPR Recalibration Submission"
+    }
+  ]
+}

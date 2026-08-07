@@ -4,34 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef } from "react";
 
 import { PolicyCard } from "@/components/dashboard/policy-card";
-
-const recommendedPolicies = [
-  {
-    id: "sustainable-finance",
-    title: "Sustainable Finance Disclosure Measures",
-    description:
-      "Key metrics for entities operating with sustainability mandates.",
-    showExplore: true,
-  },
-  {
-    id: "net-zero",
-    badge: "AI ANALYSIS",
-    title: "Net-Zero Infrastructure Act",
-    description:
-      "Critical infrastructure and incentive structures for carbon neutrality.",
-    readTime: "18 min read",
-    showExplore: false,
-  },
-  {
-    id: "digital-trade",
-    badge: "AI ANALYSIS",
-    title: "Digital Trade Facilitation Act",
-    description:
-      "Streamlining cross-border e-commerce compliance and tax obligations.",
-    readTime: "11 min read",
-    showExplore: false,
-  },
-] as const;
+import policies from "@/data/policies.json";
 
 export function RecommendedPolicies() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -76,13 +49,13 @@ export function RecommendedPolicies() {
         ref={scrollRef}
         className="flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {recommendedPolicies.map((policy) => (
+        {policies.recommendedPolicies.map((policy) => (
           <PolicyCard
             key={policy.id}
-            badge={"badge" in policy ? policy.badge : undefined}
+            badge={policy.badge}
             title={policy.title}
             description={policy.description}
-            readTime={"readTime" in policy ? policy.readTime : undefined}
+            readTime={policy.readTime}
             showExplore={policy.showExplore}
           />
         ))}

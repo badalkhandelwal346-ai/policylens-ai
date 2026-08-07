@@ -10,23 +10,7 @@ import { UpcomingDeadlines } from "@/components/dashboard/upcoming-deadlines";
 import { UrgentPolicyCard } from "@/components/dashboard/urgent-policy-card";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/landing/logo";
-
-const urgentPolicies = [
-  {
-    id: "digital-markets-act",
-    badge: "high-impact" as const,
-    title: "Digital Markets Act: Section 4 Amendment",
-    deadline: "Oct 24, 2023",
-    readTime: "8 min read",
-  },
-  {
-    id: "national-ai-safety",
-    badge: "strategic" as const,
-    title: "National AI Safety Framework 2.0",
-    deadline: "Oct 30, 2023",
-    readTime: "12 min read",
-  },
-];
+import policies from "@/data/policies.json";
 
 export function DashboardPage() {
   return (
@@ -84,10 +68,10 @@ export function DashboardPage() {
         </div>
 
         <div className="flex flex-col gap-3">
-          {urgentPolicies.map((policy) => (
+          {policies.urgentPolicies.map((policy) => (
             <UrgentPolicyCard
               key={policy.id}
-              badge={policy.badge}
+              badge={policy.badge as "high-impact" | "strategic" | "ai-analysis"}
               title={policy.title}
               deadline={policy.deadline}
               readTime={policy.readTime}

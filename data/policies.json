@@ -1,0 +1,42 @@
+{
+  "urgentPolicies": [
+    {
+      "id": "digital-markets-act",
+      "badge": "high-impact",
+      "title": "Digital Markets Act: Section 4 Amendment",
+      "deadline": "Oct 24, 2023",
+      "readTime": "8 min read"
+    },
+    {
+      "id": "national-ai-safety",
+      "badge": "strategic",
+      "title": "National AI Safety Framework 2.0",
+      "deadline": "Oct 30, 2023",
+      "readTime": "12 min read"
+    }
+  ],
+  "recommendedPolicies": [
+    {
+      "id": "sustainable-finance",
+      "title": "Sustainable Finance Disclosure Measures",
+      "description": "Key metrics for entities operating with sustainability mandates.",
+      "showExplore": true
+    },
+    {
+      "id": "net-zero",
+      "badge": "AI ANALYSIS",
+      "title": "Net-Zero Infrastructure Act",
+      "description": "Critical infrastructure and incentive structures for carbon neutrality.",
+      "readTime": "18 min read",
+      "showExplore": false
+    },
+    {
+      "id": "digital-trade",
+      "badge": "AI ANALYSIS",
+      "title": "Digital Trade Facilitation Act",
+      "description": "Streamlining cross-border e-commerce compliance and tax obligations.",
+      "readTime": "11 min read",
+      "showExplore": false
+    }
+  ]
+}
