@@ -3,14 +3,16 @@ import { cn } from "@/lib/utils";
 type BusinessInputProps = {
   label: string;
   placeholder?: string;
-  defaultValue?: string;
+  value?: string;
+  onChange?: (value: string) => void;
   className?: string;
 };
 
 export function BusinessInput({
   label,
   placeholder,
-  defaultValue,
+  value,
+  onChange,
   className,
 }: BusinessInputProps) {
   return (
@@ -21,8 +23,8 @@ export function BusinessInput({
       <input
         type="text"
         placeholder={placeholder}
-        defaultValue={defaultValue}
-        readOnly
+        value={value ?? ""}
+        onChange={(event) => onChange?.(event.target.value)}
         className="h-11 w-full rounded-xl border border-business-field-border bg-business-field px-3.5 text-sm text-business-field-text placeholder:text-business-label/60 outline-none"
       />
     </div>
