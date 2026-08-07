@@ -141,9 +141,33 @@ ${buildPolicyLensContext()}`,
 
     return NextResponse.json({ reply });
   } catch (error) {
-    console.error("/api/chat error:", error);
+    const err = error as
+      | { status?: number; error?: unknown; message?: string }
+      | undefined;
+
+    const apiError = typeof err === "object" && err !== null ? err.error : undefined;
+    const statusCode =
+      typeof err?.status === "number"
+        ? err.status
+        : typeof apiError === "object" && apiError !== null && "code" in apiError && typeof (apiError as any).code === "number"
+        ? (apiError as any).code
+        : undefined;
+    const apiStatus =
+      typeof apiError === "object" && apiError !== null && "status" in apiError && typeof (apiError as any).status === "string"
+        ? (apiError as any).status
+        : undefined;
+
+    if (statusCode === 429 || apiStatus === "RESOURCE_EXHAUSTED") {
+      return NextResponse.json(
+        {
+          error:
+            "AI assistant is temporarily unavailable because the AI service quota has been reached. Please try again later.",
+        },
+        { status: 429 },
+      );
+    }
+
     const message = error instanceof Error ? error.message : "Unknown error";
-    console.error("/api/chat error message:", message);
     return NextResponse.json(
       { error: `Gemini request failed: ${message}` },
       { status: 500 },
