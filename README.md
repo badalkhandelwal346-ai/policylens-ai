@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PolicyLens AI
 
-## Getting Started
+### AI-powered government policy intelligence for small businesses, farmers, and startups.
 
-First, run the development server:
+PolicyLens AI is a policy-intelligence prototype designed to simplify complex government policies, compliance requirements, deadlines, and alerts.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The platform combines a personalized business profile, policy dashboard, centralized policy data, alerts, upcoming deadlines, and an AI assistant powered by Google Gemini.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> **Note:** PolicyLens AI is a hackathon/demo prototype. The policy and alert records are centralized demo data and are not a live government-policy feed.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Features
 
-## Learn More
+- **Personalized Business Profile**  
+  Enter business name, business type, industry, state, language, business size, and notification preferences.
 
-To learn more about Next.js, take a look at the following resources:
+- **Policy Dashboard**  
+  View urgent policies, recommended policies, recent policy information, and relevant policy details.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **AI Policy Assistant**  
+  Ask policy-related questions and receive responses powered by Google Gemini using PolicyLens context.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Alerts & Deadlines**  
+  Track important policy alerts and upcoming deadlines.
 
-## Deploy on Vercel
+- **Policy Search & Navigation**  
+  Explore policies and quickly find relevant information through the dashboard.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Browser Persistence**  
+  Business profile information is stored using browser `localStorage`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **English & Hindi Preferences**  
+  The prototype supports English and Hindi language preferences.
+
+---
+
+## 🧠 How It Works
+
+```text
+User
+ │
+ ▼
+Business Profile
+ │
+ ▼
+Browser localStorage
+ │
+ ▼
+PolicyLens Dashboard
+ ├── Policies
+ ├── Alerts
+ └── Upcoming Deadlines
+ │
+ ▼
+AI Assistant
+ │
+ ▼
+Next.js /api/chat
+ │
+ ▼
+Google Gemini
