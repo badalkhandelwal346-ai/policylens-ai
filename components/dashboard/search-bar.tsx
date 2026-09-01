@@ -8,8 +8,8 @@ type SearchBarProps = {
 
 export function SearchBar({ value, onChange }: SearchBarProps) {
   return (
-    <div className="mx-4 mt-4 mb-2">
-      <div className="flex items-center gap-3 rounded-xl border border-[oklch(0.91_0.008_250)] bg-white px-4 py-3 shadow-sm">
+    <div className="mx-4 mt-4 mb-2 md:hidden">
+      <div className="flex items-center gap-3 rounded-xl border border-border bg-white px-4 py-3 shadow-sm">
         <Search
           className="size-4 shrink-0 text-brand-muted-foreground"
           aria-hidden="true"

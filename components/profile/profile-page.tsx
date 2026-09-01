@@ -30,6 +30,7 @@ export function ProfilePage() {
   useEffect(() => {
     const profile = readLocalStorageItem<BusinessProfile>(BUSINESS_PROFILE_KEY);
     if (profile) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setBusinessProfile(profile);
     }
   }, []);

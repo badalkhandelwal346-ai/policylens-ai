@@ -19,6 +19,7 @@ export function Header() {
   useEffect(() => {
     const savedProfile = readLocalStorageItem<BusinessProfile>(BUSINESS_PROFILE_KEY);
     if (savedProfile?.primaryLanguage && languages.includes(savedProfile.primaryLanguage)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLanguage(savedProfile.primaryLanguage);
     }
   }, []);

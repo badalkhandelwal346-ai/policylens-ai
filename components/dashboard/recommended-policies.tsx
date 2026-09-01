@@ -23,13 +23,13 @@ export function RecommendedPolicies({ policies }: RecommendedPoliciesProps) {
   };
 
   return (
-    <section className="px-4 pt-8 pb-2">
+    <section className="px-4 pt-6 pb-2 lg:px-0 lg:pt-0 lg:pb-0">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-xl font-bold tracking-tight text-brand-navy">
           Recommended Policies
         </h2>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 lg:hidden">
           <button
             id="recommended-prev-btn"
             aria-label="Scroll left"
@@ -51,7 +51,7 @@ export function RecommendedPolicies({ policies }: RecommendedPoliciesProps) {
 
       <div
         ref={scrollRef}
-        className="flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex gap-3 overflow-x-auto lg:grid lg:grid-cols-2 lg:overflow-visible pb-2 lg:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {policies.map((policy) => (
           <PolicyCard

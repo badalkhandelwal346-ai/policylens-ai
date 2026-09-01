@@ -46,7 +46,8 @@ type BusinessProfile = {
   notificationPreferences?: string[];
 };
 
-type NotificationPreference = (typeof notificationPreferences)[number];
+export type BusinessType = typeof businessTypes[number];
+export type Industry = typeof industries[number];
 
 const businessTypes = [
   "Sole Proprietorship",
@@ -99,6 +100,7 @@ export function BusinessForm() {
     );
 
     if (savedProfile) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setBusinessName(savedProfile.businessName ?? "");
       setBusinessType(savedProfile.businessType ?? businessTypes[0]);
       setIndustry(savedProfile.industry ?? industries[0]);

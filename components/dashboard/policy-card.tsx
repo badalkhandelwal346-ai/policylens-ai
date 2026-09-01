@@ -28,13 +28,13 @@ export function PolicyCard({
     >
       <article
         className={cn(
-          "flex h-64 w-52 flex-col justify-between rounded-2xl bg-brand-card p-4",
+          "flex h-64 lg:h-auto lg:min-h-56 w-52 lg:w-auto flex-col justify-between rounded-2xl border border-border bg-white p-4 shadow-sm transition-shadow hover:shadow-md",
           className,
         )}
       >
         <div className="flex flex-col gap-3">
           {badge && (
-            <span className="self-start rounded-md bg-[oklch(0.72_0.12_195)] px-2.5 py-1 text-[10px] font-semibold tracking-widest text-white uppercase">
+            <span className="self-start rounded-md bg-[oklch(0.72_0.12_195)]/10 px-2.5 py-1 text-[10px] font-bold tracking-widest text-[oklch(0.72_0.12_195)] uppercase">
               {badge}
             </span>
           )}

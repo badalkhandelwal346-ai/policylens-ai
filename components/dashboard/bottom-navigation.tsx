@@ -28,7 +28,7 @@ export function BottomNavigation() {
   return (
     <nav
       aria-label="Main navigation"
-      className="fixed bottom-0 left-1/2 z-50 w-full max-w-md -translate-x-1/2 border-t border-[oklch(0.91_0.008_250)] bg-white px-2 pb-safe"
+      className="md:hidden fixed bottom-0 left-1/2 z-50 w-full max-w-md -translate-x-1/2 border-t border-[oklch(0.91_0.008_250)] bg-white px-2 pb-safe"
     >
       <ul className="flex items-center justify-around py-2" role="list">
         {navItems.map((item) => {

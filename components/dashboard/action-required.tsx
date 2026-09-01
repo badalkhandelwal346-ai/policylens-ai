@@ -41,23 +41,30 @@ export function ActionRequired() {
   const router = useRouter();
 
   return (
-    <section className="px-4 pt-8 pb-4">
+    <section className="px-4 pt-6 lg:px-0 lg:pt-0">
       <h2 className="mb-3 text-xl font-bold tracking-tight text-brand-navy">
         Action Required
       </h2>
 
-      <div className="flex flex-col gap-3">
-        {actions.map((action) => {
+      <div className="flex flex-col rounded-2xl border border-border bg-white shadow-sm overflow-hidden">
+        {actions.map((action, i) => {
           const Icon = action.icon;
 
           return (
             <div
               key={action.id}
-              className="flex items-center gap-4 rounded-2xl border border-[oklch(0.91_0.008_250)] bg-white p-4 shadow-sm"
+              className={cn(
+                "flex flex-col sm:flex-row sm:items-center gap-4 p-4 transition-colors hover:bg-brand-muted/30",
+                i !== 0 && "border-t border-border",
+                action.variant === "primary" ? "bg-red-50/30" : "bg-white"
+              )}
             >
-              <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-brand-muted">
+              <div className={cn(
+                "flex size-12 shrink-0 items-center justify-center rounded-xl",
+                action.variant === "primary" ? "bg-red-100 text-red-700" : "bg-brand-muted text-brand-muted-foreground"
+              )}>
                 <Icon
-                  className="size-5 text-brand-muted-foreground"
+                  className="size-5"
                   aria-hidden="true"
                 />
               </div>
@@ -75,10 +82,10 @@ export function ActionRequired() {
                 id={`action-${action.id}-btn`}
                 onClick={() => router.push("/policy")}
                 className={cn(
-                  "h-12 shrink-0 rounded-xl px-4 text-sm font-semibold",
+                  "h-11 shrink-0 rounded-xl px-5 text-sm font-semibold transition-transform active:scale-95",
                   action.variant === "primary"
-                    ? "bg-brand-navy text-white hover:bg-brand-navy/90"
-                    : "border-[oklch(0.91_0.008_250)] bg-white text-brand-navy hover:bg-brand-muted",
+                    ? "bg-red-600 text-white hover:bg-red-700 shadow-sm"
+                    : "border-border bg-white text-brand-navy hover:bg-brand-muted",
                 )}
                 variant={action.variant === "primary" ? "default" : "outline"}
               >

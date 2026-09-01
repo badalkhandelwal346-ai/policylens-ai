@@ -23,6 +23,7 @@ export function Greeting({
   useEffect(() => {
     const profile = readLocalStorageItem<BusinessProfile>(BUSINESS_PROFILE_KEY);
     if (profile?.businessName && profile.businessName.trim().length > 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDisplayName(profile.businessName.trim());
     }
   }, []);

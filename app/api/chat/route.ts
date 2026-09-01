@@ -149,12 +149,12 @@ ${buildPolicyLensContext()}`,
     const statusCode =
       typeof err?.status === "number"
         ? err.status
-        : typeof apiError === "object" && apiError !== null && "code" in apiError && typeof (apiError as any).code === "number"
-        ? (apiError as any).code
+        : typeof apiError === "object" && apiError !== null && "code" in apiError && typeof (apiError as Record<string, unknown>).code === "number"
+        ? (apiError as Record<string, unknown>).code
         : undefined;
     const apiStatus =
-      typeof apiError === "object" && apiError !== null && "status" in apiError && typeof (apiError as any).status === "string"
-        ? (apiError as any).status
+      typeof apiError === "object" && apiError !== null && "status" in apiError && typeof (apiError as Record<string, unknown>).status === "string"
+        ? (apiError as Record<string, unknown>).status
         : undefined;
 
     if (statusCode === 429 || apiStatus === "RESOURCE_EXHAUSTED") {
