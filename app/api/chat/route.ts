@@ -67,12 +67,24 @@ ${JSON.stringify(upcomingDeadlines, null, 2)}
 `;
 }
 
-const SYSTEM_INSTRUCTION = `You are the PolicyLens AI assistant.
+const SYSTEM_INSTRUCTION_GENERAL = `You are the PolicyLens AI assistant.
 Use the supplied PolicyLens data when the question relates to it.
 Do not invent policy names, deadlines, benefits, or eligibility requirements.
 If the supplied data does not contain the answer, clearly say that the available PolicyLens data does not provide enough information.
 Give simple, understandable answers.
 Do not claim to have accessed live government websites unless the application actually does so.`;
+
+const SYSTEM_INSTRUCTION_POLICY_CONTEXT = `You are the PolicyLens AI assistant.
+A specific policy context has been provided below. 
+- Use the supplied policy context as the primary source.
+- Explain complex policy language in simple language.
+- Clearly distinguish policy facts from general explanation.
+- Do not invent deadlines, eligibility requirements, benefits, application steps, document requirements, or official source links.
+- Do not claim that a policy definitely applies unless the supplied context supports that conclusion.
+- Do not provide legal or professional advice, and do not present the response as guaranteed legal or professional advice.
+- If the supplied context is insufficient, say so clearly. Use a safe fallback such as: "I do not have enough information in the current policy data to answer that reliably."
+- Do not pretend to have live government data, real-time data, or claim guaranteed accuracy.
+- Do not claim the information is government-verified unless the data explicitly supports that claim.`;
 
 export async function POST(request: NextRequest) {
   if (!API_KEY) {
@@ -98,11 +110,24 @@ export async function POST(request: NextRequest) {
       ? (body as { message?: unknown }).message
       : undefined;
 
+  const policyContext =
+    typeof body === "object" && body !== null && "policyContext" in body
+      ? (body as { policyContext?: unknown }).policyContext
+      : undefined;
+
   if (typeof message !== "string" || message.trim().length === 0) {
     return NextResponse.json(
       { error: "Message is required." },
       { status: 400 },
     );
+  }
+
+  let finalSystemInstruction = SYSTEM_INSTRUCTION_GENERAL;
+  let finalContextString = buildPolicyLensContext();
+
+  if (policyContext) {
+    finalSystemInstruction = SYSTEM_INSTRUCTION_POLICY_CONTEXT;
+    finalContextString = `Selected Policy Context:\n${JSON.stringify(policyContext, null, 2)}`;
   }
 
   try {
@@ -115,9 +140,7 @@ export async function POST(request: NextRequest) {
           role: "MODEL",
           parts: [
             {
-              text: `${SYSTEM_INSTRUCTION}
-
-${buildPolicyLensContext()}`,
+              text: `${finalSystemInstruction}\n\n${finalContextString}`,
             },
           ],
         },
@@ -167,9 +190,9 @@ ${buildPolicyLensContext()}`,
       );
     }
 
-    const message = error instanceof Error ? error.message : "Unknown error";
+    const errorMsg = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: `Gemini request failed: ${message}` },
+      { error: `Gemini request failed: ${errorMsg}` },
       { status: 500 },
     );
   }

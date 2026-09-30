@@ -127,7 +127,7 @@ export function DashboardPage() {
               <Link
                 href="/policy"
                 id="urgent-view-all-btn"
-                className="text-sm font-medium text-brand-muted-foreground hover:text-brand-navy"
+                className="text-sm font-semibold text-primary-blue hover:text-primary-blue/80"
               >
                 View all
               </Link>
@@ -163,7 +163,7 @@ export function DashboardPage() {
         id="dashboard-fab-btn"
         href="/assistant"
         aria-label="Open AI assistant"
-        className="fixed right-4 bottom-24 z-50 flex size-14 items-center justify-center rounded-full bg-brand-navy shadow-lg transition-transform hover:scale-105 active:scale-95"
+        className="fixed right-4 bottom-24 z-50 flex size-14 items-center justify-center rounded-full bg-ai-cyan shadow-lg transition-transform hover:scale-105 active:scale-95"
       >
         <span className="grid grid-cols-3 gap-[3px]" aria-hidden="true">
           {Array.from({ length: 9 }).map((_, i) => (

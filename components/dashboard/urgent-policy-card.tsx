@@ -32,9 +32,9 @@ const badgeConfig: Record<
   },
   "ai-analysis": {
     label: "AI ANALYSIS",
-    className: "text-[oklch(0.72_0.12_195)]",
-    cardClassName: "border-l-4 border-l-[oklch(0.72_0.12_195)] bg-white border-y border-r border-border rounded-r-xl shadow-sm",
-    iconClassName: "text-[oklch(0.72_0.12_195)] hover:text-[oklch(0.72_0.12_195)]/80",
+    className: "text-ai-cyan",
+    cardClassName: "border-l-4 border-l-ai-cyan bg-white border-y border-r border-border rounded-r-xl shadow-sm",
+    iconClassName: "text-ai-cyan hover:text-ai-cyan/80",
   },
 };
 

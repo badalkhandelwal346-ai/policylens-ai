@@ -24,7 +24,7 @@ export function PolicyCard({
     <Link
       href="/policy"
       aria-label={showExplore ? `Explore ${title}` : `Open ${title}`}
-      className="block shrink-0"
+      className="block shrink-0 group"
     >
       <article
         className={cn(
@@ -34,7 +34,7 @@ export function PolicyCard({
       >
         <div className="flex flex-col gap-3">
           {badge && (
-            <span className="self-start rounded-md bg-[oklch(0.72_0.12_195)]/10 px-2.5 py-1 text-[10px] font-bold tracking-widest text-[oklch(0.72_0.12_195)] uppercase">
+            <span className="self-start rounded-md bg-ai-cyan/10 px-2.5 py-1 text-[10px] font-bold tracking-widest text-ai-cyan uppercase">
               {badge}
             </span>
           )}
@@ -48,7 +48,7 @@ export function PolicyCard({
 
         <div className="mt-4 border-t border-brand-muted-foreground/15 pt-3">
           {showExplore ? (
-            <span className="flex items-center gap-1 text-sm font-semibold text-brand-navy">
+            <span className="flex items-center gap-1 text-sm font-semibold text-primary-blue group-hover:text-primary-blue/80">
               Explore
               <ArrowUpRight className="size-3.5" aria-hidden="true" />
             </span>

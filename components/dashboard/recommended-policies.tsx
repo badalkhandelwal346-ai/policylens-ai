@@ -34,7 +34,7 @@ export function RecommendedPolicies({ policies }: RecommendedPoliciesProps) {
             id="recommended-prev-btn"
             aria-label="Scroll left"
             onClick={() => scroll("left")}
-            className="flex size-9 items-center justify-center rounded-full border border-[oklch(0.91_0.008_250)] bg-white text-brand-navy shadow-sm transition-colors hover:bg-brand-muted"
+            className="flex size-9 items-center justify-center rounded-full border border-border bg-white text-brand-navy shadow-sm transition-colors hover:bg-brand-muted hover:text-primary-blue"
           >
             <ChevronLeft className="size-4" aria-hidden="true" />
           </button>
@@ -42,7 +42,7 @@ export function RecommendedPolicies({ policies }: RecommendedPoliciesProps) {
             id="recommended-next-btn"
             aria-label="Scroll right"
             onClick={() => scroll("right")}
-            className="flex size-9 items-center justify-center rounded-full border border-[oklch(0.91_0.008_250)] bg-white text-brand-navy shadow-sm transition-colors hover:bg-brand-muted"
+            className="flex size-9 items-center justify-center rounded-full border border-border bg-white text-brand-navy shadow-sm transition-colors hover:bg-brand-muted hover:text-primary-blue"
           >
             <ChevronRight className="size-4" aria-hidden="true" />
           </button>

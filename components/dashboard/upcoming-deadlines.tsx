@@ -47,7 +47,7 @@ export function UpcomingDeadlines() {
             id="view-calendar-btn"
             variant="outline"
             onClick={() => router.push("/alerts")}
-            className="h-11 w-full rounded-xl border-border bg-white text-sm font-semibold text-brand-navy hover:bg-brand-muted transition-transform active:scale-95"
+            className="h-11 w-full rounded-xl border-border bg-white text-sm font-semibold text-primary-blue hover:text-primary-blue/80 hover:bg-brand-muted transition-transform active:scale-95"
           >
             View Calendar
           </Button>

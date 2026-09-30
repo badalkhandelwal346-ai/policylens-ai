@@ -54,14 +54,14 @@ export function ActionRequired() {
             <div
               key={action.id}
               className={cn(
-                "flex flex-col sm:flex-row sm:items-center gap-4 p-4 transition-colors hover:bg-brand-muted/30",
+                "flex flex-col sm:flex-row sm:items-center gap-4 p-4 transition-colors",
                 i !== 0 && "border-t border-border",
-                action.variant === "primary" ? "bg-red-50/30" : "bg-white"
+                action.variant === "primary" ? "bg-status-red/5 hover:bg-status-red/10" : "bg-white hover:bg-brand-muted/30"
               )}
             >
               <div className={cn(
                 "flex size-12 shrink-0 items-center justify-center rounded-xl",
-                action.variant === "primary" ? "bg-red-100 text-red-700" : "bg-brand-muted text-brand-muted-foreground"
+                action.variant === "primary" ? "bg-status-red/10 text-status-red" : "bg-brand-muted text-brand-muted-foreground"
               )}>
                 <Icon
                   className="size-5"
@@ -84,8 +84,8 @@ export function ActionRequired() {
                 className={cn(
                   "h-11 shrink-0 rounded-xl px-5 text-sm font-semibold transition-transform active:scale-95",
                   action.variant === "primary"
-                    ? "bg-red-600 text-white hover:bg-red-700 shadow-sm"
-                    : "border-border bg-white text-brand-navy hover:bg-brand-muted",
+                    ? "bg-status-red text-white hover:bg-status-red/90 shadow-sm"
+                    : "border-border bg-white text-primary-blue hover:bg-brand-muted",
                 )}
                 variant={action.variant === "primary" ? "default" : "outline"}
               >
