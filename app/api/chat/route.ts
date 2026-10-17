@@ -1,57 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 
-import policies from "@/data/policies.json";
-import alertsData from "@/data/alerts.json";
+import { getAllPolicies, getAlerts } from "@/lib/policies";
 
 const API_KEY = process.env.GEMINI_API_KEY;
 const MODEL_ID = "gemini-3.6-flash";
 
 function buildPolicyLensContext() {
-  const policySummaries = [
-    ...policies.urgentPolicies.map((policy) => ({
-      id: policy.id,
-      title: policy.title,
-      description: policy.description,
-      status: policy.status,
-      category: policy.category,
-      source: policy.source,
-      eligibility: policy.eligibility,
-      benefits: policy.benefits,
-      deadline: policy.deadline,
-      readTime: policy.readTime,
-      badge: policy.badge,
-    })),
-    ...policies.recommendedPolicies.map((policy) => ({
-      id: policy.id,
-      title: policy.title,
-      description: policy.description,
-      status: policy.status,
-      category: policy.category,
-      source: policy.source,
-      eligibility: policy.eligibility,
-      benefits: policy.benefits,
-      deadline: policy.deadline,
-      readTime: policy.readTime,
-      badge: policy.badge,
-      showExplore: policy.showExplore,
-    })),
-  ];
-
-  const alerts = alertsData.alerts.map((alert) => ({
+  const policySummaries = getAllPolicies();
+  const alerts = getAlerts().map((alert) => ({
     id: alert.id,
+    policyId: alert.policyId,
     title: alert.title,
-    priority: alert.priority,
-    deadline: alert.deadline,
-    category: alert.category,
-    aiConfidence: alert.aiConfidence,
-  }));
-
-  const upcomingDeadlines = alertsData.upcomingDeadlines.map((deadline) => ({
-    month: deadline.month,
-    day: deadline.day,
-    title: deadline.title,
-    subtitle: deadline.subtitle,
+    type: alert.type,
+    message: alert.message,
+    date: alert.formattedDate,
+    status: alert.calculatedStatus,
+    daysRemaining: alert.daysRemaining,
+    relatedPolicyTitle: alert.policy?.title,
   }));
 
   return `PolicyLens data:
@@ -59,11 +25,8 @@ function buildPolicyLensContext() {
 Policies:
 ${JSON.stringify(policySummaries, null, 2)}
 
-Alerts:
+Alerts & Deadlines:
 ${JSON.stringify(alerts, null, 2)}
-
-Upcoming deadlines:
-${JSON.stringify(upcomingDeadlines, null, 2)}
 `;
 }
 

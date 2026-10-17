@@ -1,11 +1,23 @@
 import { redirect } from "next/navigation";
-import Link from "next/link";
-import { Bot } from "lucide-react";
-import data from "@/data/policies.json";
+import {
+  getPolicyById,
+  getAlerts,
+  getPolicyImportantDates,
+  getPolicyAiExplanation,
+  getPolicyProcedure,
+  calculateDeadlineStatus,
+  parseDate,
+} from "@/lib/policies";
 
-import { PolicyDetailHeader } from "@/components/policy/policy-detail-header";
-import { PolicyImpact } from "@/components/policy/policy-impact";
-import { PolicySource } from "@/components/policy/policy-source";
+import {
+  PolicyDetailHeader,
+  PolicyOverview,
+  PolicyAiExplanation,
+  PolicyDatesAlerts,
+  PolicyBusinessImpact,
+  PolicyNextSteps,
+  PolicySource,
+} from "@/components/policy";
 
 type Props = {
   searchParams: Promise<{ id?: string }>;
@@ -19,45 +31,75 @@ export default async function PolicyRoute(props: Props) {
     redirect("/policies");
   }
 
-  const allPolicies = [...data.urgentPolicies, ...data.recommendedPolicies];
-  const policy = allPolicies.find((p) => p.id === id);
+  const policy = getPolicyById(id);
 
   if (!policy) {
     redirect("/policies");
   }
 
+  // Load associated alerts and computed metadata
+  const relatedAlerts = getAlerts().filter((a) => a.policyId === policy.id);
+  const milestones = getPolicyImportantDates(policy, relatedAlerts);
+  const aiExplanation = getPolicyAiExplanation(policy.id);
+  const procedureSteps = getPolicyProcedure(policy.id);
+
+  // Derive deadline status and days remaining for header summary
+  const deadlineStatus = policy.deadline ? calculateDeadlineStatus(policy.deadline) : undefined;
+  let daysRemaining: number | undefined;
+  if (policy.deadline) {
+    const parsed = parseDate(policy.deadline);
+    if (parsed) {
+      const today = new Date();
+      const target = new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+      daysRemaining = Math.ceil(
+        (target.getTime() - new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime()) /
+          (1000 * 60 * 60 * 24)
+      );
+    }
+  }
+
   return (
-    <div className="flex flex-col min-h-screen bg-background">
-      <div className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-8 md:py-12">
-        <article className="bg-white rounded-3xl border border-border shadow-sm p-6 sm:p-10 md:p-12">
+    <div className="flex flex-col min-h-screen bg-slate-50/50 pb-24">
+      <div className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-6 md:py-10">
+        <article className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-10 md:p-12 space-y-10 overflow-hidden">
+          {/* SECTION A: POLICY HEADER */}
           <PolicyDetailHeader
-            title={policy.title}
-            description={policy.description}
-            status={policy.status}
-            category={policy.category}
-            source={policy.source}
-            deadline={policy.deadline}
-            badge={policy.badge}
+            policy={policy}
+            deadlineStatus={deadlineStatus}
+            daysRemaining={daysRemaining}
           />
-          
-          <div className="mt-8">
-            <Link
-              href={`/assistant?policyId=${policy.id}`}
-              className="inline-flex items-center gap-2 rounded-xl bg-ai-cyan/10 px-5 py-3 text-sm font-bold text-ai-cyan hover:bg-ai-cyan/20 transition-colors border border-ai-cyan/20 w-full sm:w-auto justify-center"
-            >
-              <Bot className="size-5" />
-              Ask AI about this policy
-            </Link>
-          </div>
 
-          <div className="mt-10">
-            <PolicyImpact
-              benefits={policy.benefits}
-              eligibility={policy.eligibility}
-            />
-          </div>
+          {/* SECTION B: POLICY OVERVIEW */}
+          <PolicyOverview policy={policy} />
 
-          <PolicySource source={policy.source} />
+          {/* SECTION C: AI POLICY EXPLANATION */}
+          <PolicyAiExplanation
+            policy={policy}
+            aiExplanation={aiExplanation}
+          />
+
+          {/* SECTION D: IMPORTANT DATES & ALERTS */}
+          <PolicyDatesAlerts
+            policy={policy}
+            milestones={milestones}
+            relatedAlerts={relatedAlerts}
+          />
+
+          {/* SECTION E: WHY THIS MATTERS TO YOUR BUSINESS */}
+          <PolicyBusinessImpact policy={policy} />
+
+          {/* SECTION F: WHAT SHOULD I DO NEXT? — STEP-BY-STEP PROCEDURE */}
+          <PolicyNextSteps
+            policy={policy}
+            steps={procedureSteps}
+          />
+
+          {/* SECTION G: OFFICIAL SOURCE & DATA TRANSPARENCY */}
+          <PolicySource
+            source={policy.source}
+            category={policy.category}
+            status={policy.status}
+          />
         </article>
       </div>
     </div>

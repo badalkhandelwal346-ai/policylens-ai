@@ -4,6 +4,7 @@ import { ArrowUpRight, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type PolicyCardProps = {
+  id?: string;
   badge?: string;
   title: string;
   description: string;
@@ -13,6 +14,7 @@ type PolicyCardProps = {
 };
 
 export function PolicyCard({
+  id,
   badge,
   title,
   description,
@@ -20,9 +22,11 @@ export function PolicyCard({
   showExplore = false,
   className,
 }: PolicyCardProps) {
+  const targetHref = id ? `/policy?id=${id}` : "/policies";
+
   return (
     <Link
-      href="/policy"
+      href={targetHref}
       aria-label={showExplore ? `Explore ${title}` : `Open ${title}`}
       className="block shrink-0 group"
     >
@@ -38,10 +42,10 @@ export function PolicyCard({
               {badge}
             </span>
           )}
-          <h3 className="text-base font-bold leading-snug tracking-tight text-brand-navy">
+          <h3 className="text-base font-bold leading-snug tracking-tight text-brand-navy group-hover:text-primary-blue transition-colors">
             {title}
           </h3>
-          <p className="text-sm leading-relaxed text-brand-muted-foreground">
+          <p className="text-sm leading-relaxed text-brand-muted-foreground line-clamp-3">
             {description}
           </p>
         </div>

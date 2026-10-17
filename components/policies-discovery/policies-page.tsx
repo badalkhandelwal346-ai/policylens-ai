@@ -7,14 +7,10 @@ import { ArrowRight, Search, FileText, Calendar, Building2, AlertCircle } from "
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import policiesData from "@/data/policies.json";
+import { getAllPolicies } from "@/lib/policies";
 
 // The prototype dataset combines urgent and recommended policies.
-// Note: This is an artificial subset for the prototype discovery workspace.
-const allPolicies = [
-  ...policiesData.urgentPolicies,
-  ...policiesData.recommendedPolicies,
-];
+const allPolicies = getAllPolicies();
 
 // Extract unique categories and statuses for dynamic filtering
 const allCategories = Array.from(new Set(allPolicies.map((p) => p.category)));

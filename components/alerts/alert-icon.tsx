@@ -1,15 +1,32 @@
-import { Bot, FileText, Shield } from "lucide-react";
+import { Bot, Calendar, FileCheck, FileText, Shield, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type AlertIconType = "document" | "bot" | "shield" | string;
+export type AlertIconType = "deadline" | "application" | "filing" | "document" | "bot" | "shield" | "warning" | string;
 
 interface AlertIconProps {
   type: AlertIconType;
+  status?: string;
   className?: string;
 }
 
-export function AlertIcon({ type, className }: AlertIconProps) {
-  if (type === "bot") {
+export function AlertIcon({ type, status, className }: AlertIconProps) {
+  const normType = type?.toLowerCase() || "";
+  const normStatus = status?.toLowerCase() || "";
+
+  if (normStatus === "urgent" || normType === "warning") {
+    return (
+      <div
+        className={cn(
+          "flex size-10 items-center justify-center rounded-xl bg-status-amber/15 text-status-amber shadow-xs",
+          className
+        )}
+      >
+        <AlertTriangle className="size-5" aria-hidden="true" />
+      </div>
+    );
+  }
+
+  if (normType === "bot") {
     return (
       <div
         className={cn(
@@ -22,7 +39,7 @@ export function AlertIcon({ type, className }: AlertIconProps) {
     );
   }
 
-  if (type === "shield") {
+  if (normType === "shield") {
     return (
       <div
         className={cn(
@@ -31,6 +48,32 @@ export function AlertIcon({ type, className }: AlertIconProps) {
         )}
       >
         <Shield className="size-5" aria-hidden="true" />
+      </div>
+    );
+  }
+
+  if (normType === "deadline") {
+    return (
+      <div
+        className={cn(
+          "flex size-10 items-center justify-center rounded-xl bg-[#527884] text-white shadow-xs",
+          className
+        )}
+      >
+        <Calendar className="size-5" aria-hidden="true" />
+      </div>
+    );
+  }
+
+  if (normType === "filing") {
+    return (
+      <div
+        className={cn(
+          "flex size-10 items-center justify-center rounded-xl bg-slate-700 text-white shadow-xs",
+          className
+        )}
+      >
+        <FileCheck className="size-5" aria-hidden="true" />
       </div>
     );
   }

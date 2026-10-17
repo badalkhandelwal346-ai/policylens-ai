@@ -1,57 +1,58 @@
 {
   "alerts": [
     {
-      "id": "gst-update",
-      "iconType": "document",
-      "title": "New GST Update",
-      "priority": "HIGH PRIORITY",
-      "description": "Significant changes to Input Tax Credit (ITC) norms for tech service providers effective from the next fiscal quarter. Potential impact on operational margins exceeds 2.4%.",
-      "impactScore": "8.5/10",
-      "deadline": "15 Oct 2024",
-      "category": "Taxation",
-      "aiConfidence": "98% Match",
-      "primaryActionLabel": "View Analysis",
-      "secondaryActionLabel": "Dismiss"
+      "id": "alert-001",
+      "policyId": "digital-markets-act",
+      "title": "Platform Interoperability Deadline",
+      "type": "deadline",
+      "message": "The final deadline for compliance with the Section 4 Amendment is approaching.",
+      "date": "2026-10-30",
+      "status": "urgent"
     },
     {
-      "id": "msme-scheme",
-      "iconType": "bot",
-      "title": "New MSME Scheme",
-      "priority": "STANDARD",
-      "description": "Ministry of Micro, Small and Medium Enterprises announces digital transformation grants for registered entities in the manufacturing sector.",
-      "impactScore": "4.2/10",
-      "deadline": "30 Nov 2024",
-      "category": "Grants",
-      "aiConfidence": "72% Match",
-      "primaryActionLabel": "Apply Now",
-      "secondaryActionLabel": "Save for later"
+      "id": "alert-002",
+      "policyId": "national-ai-safety",
+      "title": "AI Safety Consultation Window",
+      "type": "deadline",
+      "message": "Submit your organization's feedback before the consultation phase closes.",
+      "date": "2026-11-15",
+      "status": "upcoming"
     },
     {
-      "id": "data-privacy-amendment",
-      "iconType": "shield",
-      "title": "Data Privacy Amendment",
-      "priority": "HIGH PRIORITY",
-      "description": "Proposed amendments to the Digital Personal Data Protection Act focus on cross-border data transfer compliance. Requires immediate legal audit for international operations.",
-      "impactScore": "9.1/10",
-      "deadline": "05 Oct 2024",
-      "category": "Legal",
-      "aiConfidence": "100% Match",
-      "primaryActionLabel": "Audit Checklist",
-      "secondaryActionLabel": "Dismiss"
-    }
-  ],
-  "upcomingDeadlines": [
-    {
-      "month": "OCT",
-      "day": "25",
-      "title": "Cyber Resilience Audit",
-      "subtitle": "Quarterly Compliance Review"
+      "id": "alert-003",
+      "policyId": "net-zero",
+      "title": "Net-Zero Incentive Application",
+      "type": "application",
+      "message": "Initial application for infrastructure incentives was due recently.",
+      "date": "2026-09-15",
+      "status": "overdue"
     },
     {
-      "month": "OCT",
-      "day": "28",
-      "title": "Data Privacy Report",
-      "subtitle": "GDPR Recalibration Submission"
+      "id": "alert-004",
+      "policyId": "sustainable-finance",
+      "title": "Sustainability Reporting Baseline",
+      "type": "filing",
+      "message": "Submit your baseline sustainability metrics.",
+      "date": "2026-08-30",
+      "status": "completed"
+    },
+    {
+      "id": "alert-005",
+      "policyId": "deleted-policy-id",
+      "title": "Obsolete Framework Audit",
+      "type": "deadline",
+      "message": "This policy and related deadlines have been archived.",
+      "date": "2025-12-01",
+      "status": "completed"
+    },
+    {
+      "id": "alert-006",
+      "policyId": "digital-trade",
+      "title": "Cross-Border Trade Compliance Filing",
+      "type": "filing",
+      "message": "Prepare documentation for digital trade compliance before the filing window.",
+      "date": "2027-03-31",
+      "status": "upcoming"
     }
   ]
 }

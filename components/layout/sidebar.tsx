@@ -17,7 +17,7 @@ import { Logo } from "@/components/landing/logo";
 const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
   { name: "Policies", href: "/policies", icon: FileText },
-  { name: "Deadlines", href: "/deadlines", icon: Calendar },
+  { name: "Alerts & Deadlines", href: "/alerts", icon: Calendar },
   { name: "AI Assistant", href: "/assistant", icon: Bot },
   { name: "Saved", href: "/saved", icon: Bookmark },
 ];

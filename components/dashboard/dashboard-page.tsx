@@ -125,7 +125,7 @@ export function DashboardPage() {
                 </h2>
               </div>
               <Link
-                href="/policy"
+                href="/policies"
                 id="urgent-view-all-btn"
                 className="text-sm font-semibold text-primary-blue hover:text-primary-blue/80"
               >
@@ -137,6 +137,7 @@ export function DashboardPage() {
               {filteredUrgentPolicies.map((policy) => (
                 <UrgentPolicyCard
                   key={policy.id}
+                  id={policy.id}
                   badge={policy.badge as "high-impact" | "strategic" | "ai-analysis"}
                   title={policy.title}
                   deadline={policy.deadline}

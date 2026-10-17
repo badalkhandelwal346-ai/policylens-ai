@@ -11,7 +11,7 @@ import { GreetingSection } from "./greeting-section";
 import { InputToolbar } from "./input-toolbar";
 import { TypingIndicator } from "./typing-indicator";
 import { PolicyContextCard } from "./policy-context-card";
-import data from "@/data/policies.json";
+import { getPolicyById } from "@/lib/policies";
 
 const initialMessages = [
   {
@@ -39,11 +39,10 @@ export function AssistantPage({ policyId }: AssistantPageProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Load policy context
-  const allPolicies = useMemo(() => [...data.urgentPolicies, ...data.recommendedPolicies], []);
   const policyContext = useMemo(() => {
     if (!policyId) return undefined;
-    return allPolicies.find((p) => p.id === policyId);
-  }, [policyId, allPolicies]);
+    return getPolicyById(policyId);
+  }, [policyId]);
 
   // Handle invalid policy
   const isInvalidPolicy = policyId && !policyContext;

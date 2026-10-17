@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 type PolicyBadgeVariant = "high-impact" | "strategic" | "ai-analysis";
 
 type UrgentPolicyCardProps = {
+  id?: string;
   badge: PolicyBadgeVariant;
   title: string;
   deadline: string;
@@ -39,6 +40,7 @@ const badgeConfig: Record<
 };
 
 export function UrgentPolicyCard({
+  id,
   badge,
   title,
   deadline,
@@ -46,9 +48,10 @@ export function UrgentPolicyCard({
   className,
 }: UrgentPolicyCardProps) {
   const badgeCfg = badgeConfig[badge];
+  const targetHref = id ? `/policy?id=${id}` : "/policies";
 
   return (
-    <Link href="/policy" aria-label={`Open ${title}`} className="block">
+    <Link href={targetHref} aria-label={`Open ${title}`} className="block">
       <article
         className={cn(
           "relative flex flex-col gap-4 rounded-2xl p-4 transition-all hover:shadow-md",

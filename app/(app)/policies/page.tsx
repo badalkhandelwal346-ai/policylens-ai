@@ -2,14 +2,14 @@
 
 import { useState, useMemo } from "react";
 import { Filter, X } from "lucide-react";
-import data from "@/data/policies.json";
+import { getAllPolicies } from "@/lib/policies";
 
 import { PoliciesSearch } from "@/components/policies/policies-search";
 import { PoliciesFilter } from "@/components/policies/policies-filter";
 import { DiscoveryPolicyCard } from "@/components/policies/discovery-policy-card";
 
-// Extract all policies
-const allPolicies = [...data.urgentPolicies, ...data.recommendedPolicies];
+// Extract all policies using shared utility
+const allPolicies = getAllPolicies();
 
 export default function PoliciesPage() {
   const [searchQuery, setSearchQuery] = useState("");

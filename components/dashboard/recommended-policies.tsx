@@ -56,6 +56,7 @@ export function RecommendedPolicies({ policies }: RecommendedPoliciesProps) {
         {policies.map((policy) => (
           <PolicyCard
             key={policy.id}
+            id={policy.id}
             badge={policy.badge}
             title={policy.title}
             description={policy.description}
