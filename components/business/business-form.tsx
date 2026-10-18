@@ -65,11 +65,22 @@ const industries = [
 ];
 
 const states = [
+  "Maharashtra",
+  "Karnataka",
+  "Delhi (NCT)",
+  "Tamil Nadu",
+  "Gujarat",
+  "Telangana",
+  "Uttar Pradesh",
+  "Haryana",
+  "West Bengal",
+  "Rajasthan",
+  "Kerala",
+  "Andhra Pradesh",
+  "Madhya Pradesh",
+  "Punjab",
   "California",
   "New York",
-  "Texas",
-  "Florida",
-  "Illinois",
 ];
 
 const languages = ["English", "Hindi"];

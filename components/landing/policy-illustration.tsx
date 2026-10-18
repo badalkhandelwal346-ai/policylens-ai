@@ -13,7 +13,7 @@ export function PolicyIllustration({ className }: PolicyIllustrationProps) {
         viewBox="0 0 320 240"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-auto max-w-[280px] sm:max-w-[300px] mx-auto drop-shadow-sm select-none"
+        className="w-full h-auto max-w-[320px] sm:max-w-[360px] xl:max-w-[390px] mx-auto drop-shadow-sm select-none"
       >
         {/* Soft ground pedestal / shadow */}
         <ellipse

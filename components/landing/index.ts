@@ -9,3 +9,9 @@ export { LandingPage } from "@/components/landing/landing-page";
 export { Logo } from "@/components/landing/logo";
 export { PolicyIllustration } from "@/components/landing/policy-illustration";
 export { TrustFooter } from "@/components/landing/trust-footer";
+export {
+  OnboardingCardShell,
+  OnboardingLeftPanel,
+  OnboardingRightPanel,
+} from "@/components/landing/onboarding-shell";
+export { PolicyLensWordmark } from "@/components/ui/policy-lens-wordmark";

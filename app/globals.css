@@ -162,3 +162,138 @@
     @apply font-sans;
   }
 }
+
+/* =========================================================================
+   Shared Onboarding Card Layout System
+   Enforces identical geometry, panel proportions, radii, and responsive
+   behavior for both Login (Step 1) and Business Profile (Step 2).
+   ========================================================================= */
+:root {
+  --onboarding-card-max-width: 1400px;
+  --onboarding-card-width: 92vw;
+  --onboarding-card-min-height: 780px;
+  --onboarding-card-target-height: 860px;
+  --onboarding-left-panel-width: 41%;
+  --onboarding-right-panel-width: 59%;
+}
+
+.onboarding-page-shell {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgba(249, 247, 241, 0.85);
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  .onboarding-page-shell {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .onboarding-page-shell {
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .onboarding-page-shell {
+    padding: 2.5rem;
+  }
+}
+
+.onboarding-card-container {
+  position: relative;
+  width: 100%;
+  max-width: var(--onboarding-card-max-width);
+  background-color: #ffffff;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.12);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease-in-out;
+}
+
+@media (min-width: 1024px) {
+  .onboarding-card-container {
+    width: var(--onboarding-card-width);
+    min-height: var(--onboarding-card-min-height);
+    border-radius: 32px;
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1280px) {
+  .onboarding-card-container {
+    min-height: var(--onboarding-card-target-height);
+  }
+}
+
+.onboarding-panel-left {
+  position: relative;
+  width: 100%;
+  background-color: #7899B8;
+  color: #16273B;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 1.5rem;
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .onboarding-panel-left {
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .onboarding-panel-left {
+    width: var(--onboarding-left-panel-width);
+    padding: 2.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .onboarding-panel-left {
+    padding: 3rem;
+  }
+}
+
+.onboarding-panel-right {
+  position: relative;
+  width: 100%;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 1 0%;
+  min-width: 0;
+  padding: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .onboarding-panel-right {
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .onboarding-panel-right {
+    width: var(--onboarding-right-panel-width);
+    padding: 2.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .onboarding-panel-right {
+    padding: 3rem;
+  }
+}
