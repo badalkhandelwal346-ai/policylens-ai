@@ -21,7 +21,7 @@ export function OnboardingCardShell({
 }: OnboardingCardShellProps) {
   return (
     <div className="onboarding-page-shell">
-      <div className={cn("onboarding-card-container", className)}>
+      <div className={cn("onboarding-card-container page-transition-enter", className)}>
         {children}
       </div>
     </div>

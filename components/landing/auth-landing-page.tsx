@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Info, X } from "lucide-react";
+import { ArrowRight, Info, Loader2, X } from "lucide-react";
 
 import {
   BUSINESS_PROFILE_KEY,
@@ -315,10 +315,19 @@ export function AuthLandingPage() {
                 disabled={isSubmitting}
                 className="w-full h-12 sm:h-12.5 bg-[#243B53] hover:bg-[#1A2C3E] active:scale-[0.99] text-white text-[15px] sm:text-base font-semibold py-3.5 px-6 rounded-xl shadow-md shadow-[#243B53]/20 flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-75"
               >
-                <span>
-                  {mode === "signin" ? "Sign In to Dashboard" : "Create Account"}
-                </span>
-                <ArrowRight className="size-4" aria-hidden="true" />
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+                    <span>{mode === "signin" ? "Signing In..." : "Creating Account..."}</span>
+                  </>
+                ) : (
+                  <>
+                    <span>
+                      {mode === "signin" ? "Sign In to Dashboard" : "Create Account"}
+                    </span>
+                    <ArrowRight className="size-4" aria-hidden="true" />
+                  </>
+                )}
               </button>
             </div>
           </form>

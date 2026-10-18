@@ -15,3 +15,4 @@ export {
   OnboardingRightPanel,
 } from "@/components/landing/onboarding-shell";
 export { PolicyLensWordmark } from "@/components/ui/policy-lens-wordmark";
+export { LoadingIndicator } from "@/components/ui/loading-indicator";

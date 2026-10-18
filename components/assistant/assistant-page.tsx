@@ -97,6 +97,8 @@ export function AssistantPage({ policyId }: AssistantPageProps) {
       const reply =
         response.ok && typeof responseData.reply === "string"
           ? responseData.reply.trim()
+          : typeof responseData.error === "string"
+          ? responseData.error
           : "Sorry, I couldn't process that request right now. Please try again.";
 
       setMessages((prev) => [
