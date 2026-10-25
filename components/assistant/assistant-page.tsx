@@ -24,6 +24,7 @@ const initialMessages = [
 
 type AssistantPageProps = {
   policyId?: string;
+  initialPrompt?: string;
 };
 
 type Message = {
@@ -32,11 +33,12 @@ type Message = {
   content: string;
 };
 
-export function AssistantPage({ policyId }: AssistantPageProps) {
+export function AssistantPage({ policyId, initialPrompt }: AssistantPageProps) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(initialPrompt || "");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
 
   // Load policy context
   const policyContext = useMemo(() => {

@@ -1,22 +1,17 @@
-import { ScanSearch } from "lucide-react";
-
+import { PolicyLensWordmark } from "@/components/ui/policy-lens-wordmark";
 import { cn } from "@/lib/utils";
 
 type LogoProps = {
   className?: string;
+  size?: "sm" | "md" | "lg" | "xl";
 };
 
-export function Logo({ className }: LogoProps) {
+export function Logo({ className, size = "md" }: LogoProps) {
   return (
-    <div className={cn("flex items-center gap-2", className)}>
-      <ScanSearch
-        className="size-5 text-brand-navy"
-        strokeWidth={2.25}
-        aria-hidden="true"
-      />
-      <span className="text-base font-semibold tracking-tight text-brand-navy">
-        PolicyLens AI
-      </span>
-    </div>
+    <PolicyLensWordmark
+      className={cn("select-none", className)}
+      size={size}
+    />
   );
 }
+

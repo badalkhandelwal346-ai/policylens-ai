@@ -1,14 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { ReactNode } from "react";
-
+import Link from "next/link";
+import { Building2, SlidersHorizontal } from "lucide-react";
 import { BUSINESS_PROFILE_KEY, readLocalStorageItem } from "@/lib/local-storage";
-
-type GreetingProps = {
-  name: string;
-  subtitle?: ReactNode;
-};
 
 type BusinessProfile = {
   businessName?: string;
@@ -16,35 +11,90 @@ type BusinessProfile = {
   stateOfOperation?: string;
 };
 
-export function Greeting({
-  name,
-  subtitle = "Here is your policy intelligence overview for today.",
-}: GreetingProps) {
-  const [displayName, setDisplayName] = useState(name);
-  const [displaySubtitle, setDisplaySubtitle] = useState<ReactNode>(subtitle);
+function getSalutation() {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  return "Good evening";
+}
+
+export function Greeting() {
+  const [profile, setProfile] = useState<BusinessProfile | null>(null);
+  const [salutation] = useState<string>(getSalutation);
 
   useEffect(() => {
-    const profile = readLocalStorageItem<BusinessProfile>(BUSINESS_PROFILE_KEY);
-    if (profile?.businessName && profile.businessName.trim().length > 0) {
+    const saved = readLocalStorageItem<BusinessProfile>(BUSINESS_PROFILE_KEY);
+    if (saved) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setDisplayName(profile.businessName.trim());
-    }
-    if (profile?.industry || profile?.stateOfOperation) {
-      const parts = [profile.industry, profile.stateOfOperation].filter(Boolean);
-      setDisplaySubtitle(
-        `Active regulatory tracking for ${parts.join(" • ")}.`
-      );
+      setProfile(saved);
     }
   }, []);
 
+
+  const businessName = profile?.businessName?.trim();
+  const industry = profile?.industry?.trim();
+  const state = profile?.stateOfOperation?.trim();
+
+  const hasContext = industry || state;
+  const contextParts = [industry, state].filter(Boolean);
+
   return (
-    <div className="px-4 pt-6 pb-2">
-      <h1 className="text-2xl font-semibold tracking-tight text-brand-navy">
-        Good Morning, {displayName}.
-      </h1>
-      <p className="mt-1.5 text-base leading-snug text-brand-muted-foreground">
-        {displaySubtitle}
-      </p>
-    </div>
+    <section className="px-4 pt-6 pb-2 md:px-0">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#7899B8]/15 px-3 py-1 text-xs font-semibold text-[#16273B] border border-[#7899B8]/30">
+              <span className="size-1.5 rounded-full bg-[#2563EB]" aria-hidden="true" />
+              Your policy overview
+            </span>
+
+            {hasContext && (
+              <span className="hidden sm:inline-flex items-center gap-1 text-xs font-medium text-slate-500">
+                <Building2 className="size-3.5 text-[#7899B8]" aria-hidden="true" />
+                {contextParts.join(" • ")}
+              </span>
+            )}
+          </div>
+
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#16273B]">
+            {businessName ? `${salutation}, ${businessName}.` : "Welcome to PolicyLens AI."}
+          </h1>
+
+          <p className="mt-1.5 text-sm sm:text-base leading-relaxed text-[#243B53]/80 max-w-2xl">
+            {hasContext ? (
+              <>
+                Active policy intelligence for{" "}
+                <span className="font-semibold text-[#16273B]">
+                  {contextParts.join(" • ")}
+                </span>
+                . Highlights relevant regulatory updates and upcoming compliance deadlines.
+              </>
+            ) : (
+              <>
+                Highlights relevant government policies and upcoming statutory deadlines for your business.{" "}
+                <Link
+                  href="/business"
+                  className="font-semibold text-[#2563EB] hover:underline inline-flex items-center gap-1"
+                >
+                  Complete your business profile
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </>
+            )}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2 mt-2 sm:mt-0 shrink-0">
+          <Link
+            href="/business"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-white px-3.5 py-2 text-xs font-semibold text-[#16273B] shadow-xs hover:bg-[#FAF8F5] transition-colors"
+          >
+            <SlidersHorizontal className="size-3.5 text-[#7899B8]" />
+            <span>{businessName ? "Update Profile" : "Configure Profile"}</span>
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }
+

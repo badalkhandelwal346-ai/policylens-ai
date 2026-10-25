@@ -7,3 +7,7 @@ export { RecommendedPolicies } from "@/components/dashboard/recommended-policies
 export { SearchBar } from "@/components/dashboard/search-bar";
 export { UpcomingDeadlines } from "@/components/dashboard/upcoming-deadlines";
 export { UrgentPolicyCard } from "@/components/dashboard/urgent-policy-card";
+export { DashboardMetrics } from "@/components/dashboard/dashboard-metrics";
+export { AiAssistantCard } from "@/components/dashboard/ai-assistant-card";
+export { TrackingSummaryCard } from "@/components/dashboard/tracking-summary-card";
+

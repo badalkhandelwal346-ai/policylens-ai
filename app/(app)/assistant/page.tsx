@@ -9,12 +9,14 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  searchParams: Promise<{ policyId?: string }>;
+  searchParams: Promise<{ policyId?: string; prompt?: string }>;
 };
 
 export default async function AssistantRoute(props: Props) {
   const searchParams = await props.searchParams;
   const policyId = searchParams?.policyId;
+  const prompt = searchParams?.prompt;
 
-  return <AssistantPage policyId={policyId} />;
+  return <AssistantPage policyId={policyId} initialPrompt={prompt} />;
 }
+

@@ -15,7 +15,7 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { id: "nav-home", label: "Home", icon: Home, href: "/dashboard" },
+  { id: "nav-home", label: "Dashboard", icon: Home, href: "/dashboard" },
   { id: "nav-policies", label: "Policies", icon: FileText, href: "/policies" },
   { id: "nav-assistant", label: "Assistant", icon: Bot, href: "/assistant" },
   { id: "nav-alerts", label: "Alerts", icon: Bell, href: "/alerts" },
@@ -27,10 +27,10 @@ export function BottomNavigation() {
 
   return (
     <nav
-      aria-label="Main navigation"
-      className="md:hidden fixed bottom-0 left-1/2 z-50 w-full max-w-md -translate-x-1/2 border-t border-border bg-white px-2 pb-safe"
+      aria-label="Mobile navigation"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 border-t border-border/80 bg-white/95 backdrop-blur px-2 py-1 shadow-lg"
     >
-      <ul className="flex items-center justify-around py-2" role="list">
+      <ul className="flex items-center justify-around" role="list">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive =
@@ -39,26 +39,31 @@ export function BottomNavigation() {
               : pathname?.startsWith(item.href);
 
           return (
-            <li key={item.id}>
+            <li key={item.id} className="flex-1">
               <Link
                 id={item.id}
                 href={item.href}
                 aria-label={item.label}
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "flex flex-col items-center gap-1 px-3 py-1 text-xs font-medium transition-colors",
+                  "flex flex-col items-center gap-1 py-1 text-[11px] font-semibold transition-colors relative",
                   isActive
-                    ? "text-primary-blue"
-                    : "text-brand-muted-foreground hover:text-primary-blue/80",
+                    ? "text-[#2563EB]"
+                    : "text-[#2E465F]/70 hover:text-[#16273B]"
                 )}
               >
-                <Icon
-                  className={cn(
-                    "size-5",
-                    isActive && "stroke-[2.25px]",
-                  )}
-                  aria-hidden="true"
-                />
+                <div className={cn(
+                  "flex size-8 items-center justify-center rounded-xl transition-colors",
+                  isActive ? "bg-[#7899B8]/20" : ""
+                )}>
+                  <Icon
+                    className={cn(
+                      "size-5",
+                      isActive ? "text-[#2563EB] stroke-[2.25px]" : "text-[#7899B8]"
+                    )}
+                    aria-hidden="true"
+                  />
+                </div>
                 <span>{item.label}</span>
               </Link>
             </li>
@@ -68,4 +73,5 @@ export function BottomNavigation() {
     </nav>
   );
 }
+
 
