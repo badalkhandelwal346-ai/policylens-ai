@@ -5,12 +5,13 @@ export type ChatMessageProps = {
   id: string;
   role: "assistant" | "user";
   content: string;
+  timestamp?: string;
 };
 
-export function ChatMessage({ role, content }: ChatMessageProps) {
+export function ChatMessage({ role, content, timestamp }: ChatMessageProps) {
   if (role === "user") {
-    return <UserMessage content={content} />;
+    return <UserMessage content={content} timestamp={timestamp} />;
   }
 
-  return <AssistantMessage content={content} />;
+  return <AssistantMessage content={content} timestamp={timestamp} />;
 }

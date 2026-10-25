@@ -78,11 +78,34 @@ export async function POST(request: NextRequest) {
       ? (body as { policyContext?: unknown }).policyContext
       : undefined;
 
+  const rawHistory =
+    typeof body === "object" && body !== null && "history" in body
+      ? (body as { history?: unknown }).history
+      : undefined;
+
   if (typeof message !== "string" || message.trim().length === 0) {
     return NextResponse.json(
       { error: "Message is required." },
       { status: 400 },
     );
+  }
+
+  const historyParts: Array<{ role: "USER" | "MODEL"; parts: Array<{ text: string }> }> = [];
+  if (Array.isArray(rawHistory)) {
+    for (const item of rawHistory.slice(-8)) {
+      if (
+        item &&
+        typeof item === "object" &&
+        (item.role === "user" || item.role === "assistant") &&
+        typeof item.content === "string" &&
+        item.content.trim()
+      ) {
+        historyParts.push({
+          role: item.role === "user" ? "USER" : "MODEL",
+          parts: [{ text: item.content.trim() }],
+        });
+      }
+    }
   }
 
   let finalSystemInstruction = SYSTEM_INSTRUCTION_GENERAL;
@@ -96,22 +119,25 @@ export async function POST(request: NextRequest) {
   try {
     const ai = new GoogleGenAI({ apiKey: API_KEY });
 
+    const contents = [
+      {
+        role: "MODEL" as const,
+        parts: [
+          {
+            text: `${finalSystemInstruction}\n\n${finalContextString}`,
+          },
+        ],
+      },
+      ...historyParts,
+      {
+        role: "USER" as const,
+        parts: [{ text: message.trim() }],
+      },
+    ];
+
     const response = await ai.models.generateContent({
       model: MODEL_ID,
-      contents: [
-        {
-          role: "MODEL",
-          parts: [
-            {
-              text: `${finalSystemInstruction}\n\n${finalContextString}`,
-            },
-          ],
-        },
-        {
-          role: "USER",
-          parts: [{ text: message.trim() }],
-        },
-      ],
+      contents,
       config: {
         maxOutputTokens: 512,
       },

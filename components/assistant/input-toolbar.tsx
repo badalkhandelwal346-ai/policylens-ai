@@ -4,13 +4,13 @@ import { SuggestedPrompts } from "./suggested-prompts";
 type InputToolbarProps = {
   inputValue?: string;
   disabled?: boolean;
-  onInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit?: (e: React.FormEvent) => void;
+  onInputChange?: (value: string) => void;
+  onSubmit?: () => void;
   onSelectPrompt?: (prompt: string) => void;
 };
 
 export function InputToolbar({
-  inputValue,
+  inputValue = "",
   disabled,
   onInputChange,
   onSubmit,
@@ -22,8 +22,8 @@ export function InputToolbar({
       <ChatInput
         value={inputValue}
         disabled={disabled}
-        onChange={onInputChange}
-        onSubmit={onSubmit}
+        onChange={(val) => onInputChange?.(val)}
+        onSubmit={() => onSubmit?.()}
       />
     </div>
   );

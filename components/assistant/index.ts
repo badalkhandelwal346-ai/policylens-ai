@@ -11,3 +11,6 @@ export * from "./chat-input";
 export * from "./input-toolbar";
 export * from "./empty-state";
 export * from "./bottom-navigation";
+export * from "./chat-history-panel";
+export * from "./formatted-message";
+export * from "./policy-context-card";
