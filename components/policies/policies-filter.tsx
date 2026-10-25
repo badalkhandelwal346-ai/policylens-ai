@@ -1,13 +1,27 @@
-import { X, Filter } from "lucide-react";
+"use client";
+
+import { X, Filter, RotateCcw, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+
+type FilterOption = {
+  name: string;
+  count: number;
+};
 
 type PoliciesFilterProps = {
-  categories: string[];
-  statuses: string[];
+  categories: FilterOption[];
+  statuses: FilterOption[];
   selectedCategories: string[];
   selectedStatuses: string[];
+  selectedPriority: "all" | "urgent" | "standard";
+  selectedDeadlineOnly: boolean;
   onCategoryChange: (category: string) => void;
   onStatusChange: (status: string) => void;
+  onPriorityChange: (priority: "all" | "urgent" | "standard") => void;
+  onDeadlineOnlyChange: (enabled: boolean) => void;
+  onClearAll: () => void;
+  hasActiveFilters: boolean;
   isMobileOpen: boolean;
   onMobileClose: () => void;
 };
@@ -17,94 +31,232 @@ export function PoliciesFilter({
   statuses,
   selectedCategories,
   selectedStatuses,
+  selectedPriority,
+  selectedDeadlineOnly,
   onCategoryChange,
   onStatusChange,
+  onPriorityChange,
+  onDeadlineOnlyChange,
+  onClearAll,
+  hasActiveFilters,
   isMobileOpen,
   onMobileClose,
 }: PoliciesFilterProps) {
   const content = (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-5">
+      {/* Header with Clear button */}
+      <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div className="flex items-center gap-2">
+          <Filter className="size-4 text-[#7899B8]" aria-hidden="true" />
+          <h2 className="text-sm font-bold tracking-tight text-[#16273B]">
+            Filters
+          </h2>
+        </div>
+
+        {hasActiveFilters && (
+          <button
+            type="button"
+            onClick={onClearAll}
+            className="text-xs font-semibold text-[#2563EB] hover:underline flex items-center gap-1 cursor-pointer"
+          >
+            <RotateCcw className="size-3" />
+            <span>Reset</span>
+          </button>
+        )}
+      </div>
+
+      {/* Priority Filter */}
       <div>
-        <h3 className="mb-4 text-sm font-bold tracking-tight text-brand-navy">
-          Category
+        <h3 className="mb-2.5 text-xs font-bold uppercase tracking-wider text-slate-400">
+          Priority
         </h3>
-        <div className="flex flex-col gap-3">
-          {categories.map((category) => (
-            <label key={category} className="flex items-center gap-3 cursor-pointer group">
-              <div className="relative flex items-center">
-                <input
-                  type="checkbox"
-                  className="peer sr-only"
-                  checked={selectedCategories.includes(category)}
-                  onChange={() => onCategoryChange(category)}
-                />
-                <div className="size-4 rounded border border-border bg-white transition-colors peer-checked:border-primary-blue peer-checked:bg-primary-blue group-hover:border-primary-blue/50" />
-                <svg
-                  className="absolute left-0 top-0 size-4 pointer-events-none opacity-0 peer-checked:opacity-100 text-white p-0.5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              </div>
-              <span className="text-sm text-brand-muted-foreground group-hover:text-brand-navy transition-colors">
-                {category}
-              </span>
-            </label>
+        <div className="grid grid-cols-3 gap-1.5 p-1 rounded-xl bg-slate-100/80 border border-slate-200/60">
+          {(
+            [
+              { id: "all", label: "All" },
+              { id: "urgent", label: "Urgent" },
+              { id: "standard", label: "Standard" },
+            ] as const
+          ).map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => onPriorityChange(item.id)}
+              className={cn(
+                "py-1.5 px-2 rounded-lg text-xs font-semibold text-center transition-all cursor-pointer",
+                selectedPriority === item.id
+                  ? "bg-white text-[#16273B] shadow-2xs"
+                  : "text-slate-600 hover:text-[#16273B]"
+              )}
+            >
+              {item.label}
+            </button>
           ))}
         </div>
       </div>
 
-      <div className="h-px w-full bg-border" />
+      <div className="h-px w-full bg-slate-100" />
 
+      {/* Category Filter */}
       <div>
-        <h3 className="mb-4 text-sm font-bold tracking-tight text-brand-navy">
-          Status
-        </h3>
-        <div className="flex flex-col gap-3">
-          {statuses.map((status) => (
-            <label key={status} className="flex items-center gap-3 cursor-pointer group">
-              <div className="relative flex items-center">
-                <input
-                  type="checkbox"
-                  className="peer sr-only"
-                  checked={selectedStatuses.includes(status)}
-                  onChange={() => onStatusChange(status)}
-                />
-                <div className="size-4 rounded border border-border bg-white transition-colors peer-checked:border-primary-blue peer-checked:bg-primary-blue group-hover:border-primary-blue/50" />
-                <svg
-                  className="absolute left-0 top-0 size-4 pointer-events-none opacity-0 peer-checked:opacity-100 text-white p-0.5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              </div>
-              <span className="text-sm text-brand-muted-foreground group-hover:text-brand-navy transition-colors">
-                {status}
-              </span>
-            </label>
-          ))}
+        <div className="flex items-center justify-between mb-2.5">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            Category
+          </h3>
+          {selectedCategories.length > 0 && (
+            <span className="text-[10px] font-bold text-[#2563EB] bg-blue-50 px-1.5 py-0.2 rounded">
+              {selectedCategories.length} selected
+            </span>
+          )}
         </div>
+        <div className="flex flex-col gap-2 max-h-56 overflow-y-auto pr-1">
+          {categories.map((cat) => {
+            const isChecked = selectedCategories.includes(cat.name);
+            return (
+              <label
+                key={cat.name}
+                className="flex items-center justify-between gap-2.5 cursor-pointer group py-0.5 select-none"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div
+                    className={cn(
+                      "flex size-4 shrink-0 items-center justify-center rounded border transition-colors",
+                      isChecked
+                        ? "bg-[#2563EB] border-[#2563EB] text-white"
+                        : "border-slate-300 bg-white group-hover:border-[#7899B8]"
+                    )}
+                  >
+                    {isChecked && <Check className="size-3 stroke-[3]" />}
+                  </div>
+                  <input
+                    type="checkbox"
+                    className="sr-only"
+                    checked={isChecked}
+                    onChange={() => onCategoryChange(cat.name)}
+                  />
+                  <span
+                    className={cn(
+                      "text-xs leading-tight truncate transition-colors",
+                      isChecked
+                        ? "font-semibold text-[#16273B]"
+                        : "text-slate-600 group-hover:text-[#16273B]"
+                    )}
+                  >
+                    {cat.name}
+                  </span>
+                </div>
+                <span className="text-[11px] font-medium text-slate-400 shrink-0">
+                  {cat.count}
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="h-px w-full bg-slate-100" />
+
+      {/* Status Filter */}
+      <div>
+        <div className="flex items-center justify-between mb-2.5">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            Policy Status
+          </h3>
+          {selectedStatuses.length > 0 && (
+            <span className="text-[10px] font-bold text-[#2563EB] bg-blue-50 px-1.5 py-0.2 rounded">
+              {selectedStatuses.length} selected
+            </span>
+          )}
+        </div>
+        <div className="flex flex-col gap-2 max-h-56 overflow-y-auto pr-1">
+          {statuses.map((stat) => {
+            const isChecked = selectedStatuses.includes(stat.name);
+            return (
+              <label
+                key={stat.name}
+                className="flex items-center justify-between gap-2.5 cursor-pointer group py-0.5 select-none"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div
+                    className={cn(
+                      "flex size-4 shrink-0 items-center justify-center rounded border transition-colors",
+                      isChecked
+                        ? "bg-[#2563EB] border-[#2563EB] text-white"
+                        : "border-slate-300 bg-white group-hover:border-[#7899B8]"
+                    )}
+                  >
+                    {isChecked && <Check className="size-3 stroke-[3]" />}
+                  </div>
+                  <input
+                    type="checkbox"
+                    className="sr-only"
+                    checked={isChecked}
+                    onChange={() => onStatusChange(stat.name)}
+                  />
+                  <span
+                    className={cn(
+                      "text-xs leading-tight truncate transition-colors",
+                      isChecked
+                        ? "font-semibold text-[#16273B]"
+                        : "text-slate-600 group-hover:text-[#16273B]"
+                    )}
+                  >
+                    {stat.name}
+                  </span>
+                </div>
+                <span className="text-[11px] font-medium text-slate-400 shrink-0">
+                  {stat.count}
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="h-px w-full bg-slate-100" />
+
+      {/* Deadlines Toggle */}
+      <div>
+        <h3 className="mb-2.5 text-xs font-bold uppercase tracking-wider text-slate-400">
+          Deadlines
+        </h3>
+        <label className="flex items-center gap-2.5 cursor-pointer group select-none">
+          <div
+            className={cn(
+              "flex size-4 shrink-0 items-center justify-center rounded border transition-colors",
+              selectedDeadlineOnly
+                ? "bg-[#2563EB] border-[#2563EB] text-white"
+                : "border-slate-300 bg-white group-hover:border-[#7899B8]"
+            )}
+          >
+            {selectedDeadlineOnly && <Check className="size-3 stroke-[3]" />}
+          </div>
+          <input
+            type="checkbox"
+            className="sr-only"
+            checked={selectedDeadlineOnly}
+            onChange={(e) => onDeadlineOnlyChange(e.target.checked)}
+          />
+          <span
+            className={cn(
+              "text-xs transition-colors",
+              selectedDeadlineOnly
+                ? "font-semibold text-[#16273B]"
+                : "text-slate-600 group-hover:text-[#16273B]"
+            )}
+          >
+            Only show policies with active deadlines
+          </span>
+        </label>
       </div>
     </div>
   );
 
   return (
     <>
-      {/* Desktop Sidebar */}
+      {/* Desktop Sticky Sidebar */}
       <aside className="hidden lg:block w-full">
-        <div className="sticky top-24 rounded-2xl border border-border bg-white p-6 shadow-sm">
+        <div className="sticky top-24 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
           {content}
         </div>
       </aside>
@@ -112,36 +264,57 @@ export function PoliciesFilter({
       {/* Mobile Drawer Overlay */}
       {isMobileOpen && (
         <div
-          className="fixed inset-0 z-50 bg-brand-navy/20 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-50 bg-[#16273B]/30 backdrop-blur-xs lg:hidden transition-opacity"
           onClick={onMobileClose}
           aria-hidden="true"
         />
       )}
 
-      {/* Mobile Drawer Content */}
+      {/* Mobile Drawer Container */}
       <div
         className={cn(
-          "fixed inset-y-0 right-0 z-50 w-full max-w-xs bg-white shadow-xl transition-transform duration-300 ease-in-out lg:hidden",
+          "fixed inset-y-0 right-0 z-50 w-full max-w-xs bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden flex flex-col",
           isMobileOpen ? "translate-x-0" : "translate-x-full"
         )}
+        aria-modal="true"
+        role="dialog"
       >
-        <div className="flex h-full flex-col">
-          <div className="flex items-center justify-between border-b border-border p-4">
-            <div className="flex items-center gap-2 text-brand-navy font-bold">
-              <Filter className="size-5" />
-              <h2>Filters</h2>
-            </div>
-            <button
-              onClick={onMobileClose}
-              className="rounded-full p-2 text-brand-muted-foreground hover:bg-muted hover:text-brand-navy transition-colors"
-              aria-label="Close filters"
+        <div className="flex items-center justify-between border-b border-slate-100 p-4">
+          <div className="flex items-center gap-2 text-[#16273B] font-bold text-sm">
+            <Filter className="size-4 text-[#7899B8]" />
+            <span>Filter Policies</span>
+          </div>
+          <button
+            onClick={onMobileClose}
+            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-[#16273B] transition-colors cursor-pointer"
+            aria-label="Close filters"
+          >
+            <X className="size-5" />
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-5">
+          {content}
+        </div>
+
+        <div className="p-4 border-t border-slate-100 bg-slate-50 flex items-center gap-2.5">
+          {hasActiveFilters && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onClearAll}
+              className="flex-1 h-9 rounded-xl text-xs font-semibold border-slate-200 cursor-pointer"
             >
-              <X className="size-5" />
-            </button>
-          </div>
-          <div className="flex-1 overflow-y-auto p-6">
-            {content}
-          </div>
+              Reset
+            </Button>
+          )}
+          <Button
+            size="sm"
+            onClick={onMobileClose}
+            className="flex-1 h-9 rounded-xl text-xs font-semibold bg-[#16273B] text-white hover:bg-[#243B53] cursor-pointer"
+          >
+            Show Results
+          </Button>
         </div>
       </div>
     </>

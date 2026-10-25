@@ -1,11 +1,11 @@
 "use client";
 
 import { useMemo } from "react";
-import Image from "next/image";
-import { FilterX } from "lucide-react";
+import { FilterX, RotateCcw, AlertTriangle, Clock, CheckCircle2 } from "lucide-react";
 import { AlertCard } from "./alert-card";
 import { getAlerts, type EnrichedAlert } from "@/lib/policies";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const STATUS_FILTERS = ["All", "Urgent", "Upcoming", "Overdue", "Completed"] as const;
 const TYPE_FILTERS = ["All", "Deadline", "Application", "Filing"] as const;
@@ -70,21 +70,19 @@ export function AlertsList({
 
       // 3. Search query
       if (q) {
-        const matchesAlertTitle = alert.title.toLowerCase().includes(q);
-        const matchesMessage = alert.message.toLowerCase().includes(q);
-        const matchesType = alert.type.toLowerCase().includes(q);
-        const matchesPolicyTitle = alert.policy?.title.toLowerCase().includes(q) ?? false;
-        const matchesPolicyCategory = alert.policy?.category.toLowerCase().includes(q) ?? false;
-        const matchesPolicySource = alert.policy?.source?.toLowerCase().includes(q) ?? false;
+        const searchableFields = [
+          alert.title,
+          alert.message,
+          alert.type,
+          alert.policy?.title,
+          alert.policy?.category,
+          alert.policy?.source,
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
 
-        if (
-          !matchesAlertTitle &&
-          !matchesMessage &&
-          !matchesType &&
-          !matchesPolicyTitle &&
-          !matchesPolicyCategory &&
-          !matchesPolicySource
-        ) {
+        if (!searchableFields.includes(q)) {
           return false;
         }
       }
@@ -93,92 +91,211 @@ export function AlertsList({
     });
   }, [allAlerts, activeFilter, selectedType, searchQuery]);
 
+  // Grouped breakdown when viewing "All"
+  const needsAttentionAlerts = useMemo(() => {
+    return filteredAlerts.filter(
+      (a) => a.calculatedStatus === "urgent" || a.calculatedStatus === "overdue"
+    );
+  }, [filteredAlerts]);
+
+  const upcomingAlerts = useMemo(() => {
+    return filteredAlerts.filter((a) => a.calculatedStatus === "upcoming");
+  }, [filteredAlerts]);
+
+  const completedAlerts = useMemo(() => {
+    return filteredAlerts.filter((a) => a.calculatedStatus === "completed");
+  }, [filteredAlerts]);
+
+  const isGroupedView = activeFilter === "All" && !searchQuery && selectedType === "All";
+
   return (
-    <div className="flex flex-col gap-4 px-4 pb-6 pt-2">
-      {/* Primary Status Filters */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-        {STATUS_FILTERS.map((filter) => {
-          const count = statusCounts[filter] ?? 0;
-          const isActive = activeFilter.toLowerCase() === filter.toLowerCase();
+    <div className="flex flex-col gap-6 w-full">
+      {/* Primary Status Filters Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-1 border-b border-slate-100">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {STATUS_FILTERS.map((filter) => {
+            const count = statusCounts[filter] ?? 0;
+            const isActive = activeFilter.toLowerCase() === filter.toLowerCase();
 
-          return (
-            <button
-              key={filter}
-              id={`alerts-filter-${filter.toLowerCase()}-btn`}
-              onClick={() => onFilterChange?.(filter)}
-              className={cn(
-                "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs sm:text-sm font-semibold transition-colors border cursor-pointer",
-                isActive
-                  ? "bg-[#527884] text-white border-[#527884]"
-                  : "bg-white text-[#2A434D] border-slate-200 hover:bg-slate-50"
-              )}
-            >
-              <span>{filter}</span>
-              <span
-                className={cn(
-                  "rounded-full px-1.5 py-0.2 text-[10px] font-bold",
-                  isActive ? "bg-white/20 text-white" : "bg-slate-100 text-[#4D646E]"
-                )}
-              >
-                {count}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Optional Type Filter Row (Toggled via header filter button) */}
-      {showTypeFilters && (
-        <div className="flex items-center gap-2 overflow-x-auto py-1 px-1 bg-slate-100/70 rounded-xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <span className="text-[11px] font-bold text-[#78909C] uppercase pl-2 shrink-0">
-            Type:
-          </span>
-          {TYPE_FILTERS.map((type) => {
-            const isTypeActive = selectedType.toLowerCase() === type.toLowerCase();
             return (
               <button
-                key={type}
-                onClick={() => onTypeChange?.(type)}
+                key={filter}
+                id={`alerts-filter-${filter.toLowerCase()}-btn`}
+                type="button"
+                onClick={() => onFilterChange?.(filter)}
                 className={cn(
-                  "whitespace-nowrap rounded-lg px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer",
-                  isTypeActive
-                    ? "bg-white text-[#2A434D] shadow-xs font-semibold"
-                    : "text-[#527884] hover:text-[#2A434D]"
+                  "inline-flex items-center gap-1.5 whitespace-nowrap rounded-xl px-3 py-1.5 text-xs font-semibold transition-all border cursor-pointer",
+                  isActive
+                    ? "bg-[#16273B] text-white border-[#16273B] shadow-xs"
+                    : "bg-white text-slate-700 border-slate-200/80 hover:bg-[#FAF8F5] hover:border-[#7899B8]/50"
                 )}
               >
-                {type}
+                <span>{filter}</span>
+                <span
+                  className={cn(
+                    "rounded-md px-1.5 py-0.2 text-[10px] font-bold",
+                    isActive ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"
+                  )}
+                >
+                  {count}
+                </span>
               </button>
             );
           })}
         </div>
-      )}
 
-      {/* Alerts List or Empty State */}
-      {filteredAlerts.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-12 px-4 text-center bg-white rounded-2xl border border-dashed border-slate-200 my-2">
-          <div className="rounded-full bg-slate-100 p-4 mb-3 text-slate-400">
-            <FilterX className="size-8" aria-hidden="true" />
+        {/* Type Filter Pills if toggled */}
+        {showTypeFilters && (
+          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100/80 border border-slate-200/60 overflow-x-auto text-xs">
+            <span className="text-[10px] font-bold text-slate-400 uppercase px-2 shrink-0">
+              Type:
+            </span>
+            {TYPE_FILTERS.map((type) => {
+              const isTypeActive = selectedType.toLowerCase() === type.toLowerCase();
+              return (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => onTypeChange?.(type)}
+                  className={cn(
+                    "px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer",
+                    isTypeActive
+                      ? "bg-white text-[#16273B] font-semibold shadow-2xs"
+                      : "text-slate-600 hover:text-[#16273B]"
+                  )}
+                >
+                  {type}
+                </button>
+              );
+            })}
           </div>
-          <h3 className="text-base sm:text-lg font-semibold text-[#2A434D] mb-1">
-            No alerts found
+        )}
+      </div>
+
+      {/* Alerts Results Content */}
+      {filteredAlerts.length === 0 ? (
+        /* Empty State */
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-[#FAF8F5]/50 p-12 text-center w-full my-4">
+          <div className="flex size-12 items-center justify-center rounded-2xl bg-[#7899B8]/15 text-[#16273B] mb-3">
+            <FilterX className="size-6 text-[#7899B8]" />
+          </div>
+          <h3 className="text-base font-bold text-[#16273B]">
+            No alerts match your current filters
           </h3>
-          <p className="text-xs sm:text-sm text-[#4D646E] max-w-xs mb-4">
+          <p className="mt-1 text-xs sm:text-sm text-slate-500 max-w-sm leading-relaxed">
             {searchQuery
-              ? `No alerts or deadlines matched "${searchQuery}". Try a different search term or reset your filters.`
-              : "No policy deadlines currently match the selected criteria."}
+              ? `No alerts or policy deadlines matched "${searchQuery}". Try clearing search keywords or choosing a different status filter.`
+              : "No regulatory deadlines currently match the selected criteria."}
           </p>
           {(searchQuery || activeFilter !== "All" || selectedType !== "All") && (
-            <button
-              type="button"
+            <Button
               onClick={onResetFilters}
-              className="text-xs sm:text-sm font-semibold text-primary-blue hover:underline cursor-pointer"
+              className="mt-4 h-9 rounded-xl px-4 text-xs font-semibold bg-[#16273B] text-white hover:bg-[#243B53] shadow-xs cursor-pointer flex items-center gap-1.5"
             >
-              Reset search and filters
-            </button>
+              <RotateCcw className="size-3.5" />
+              <span>Reset search and filters</span>
+            </Button>
+          )}
+        </div>
+      ) : isGroupedView ? (
+        /* Section 7 Grouped View (Needs Attention -> Upcoming -> Completed) */
+        <div className="space-y-8 w-full">
+          {/* 1. Needs Attention (Urgent & Overdue) */}
+          {needsAttentionAlerts.length > 0 && (
+            <section aria-label="Needs Attention Alerts">
+              <div className="mb-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="flex size-7 items-center justify-center rounded-lg bg-rose-50 text-rose-700">
+                    <AlertTriangle className="size-4" aria-hidden="true" />
+                  </div>
+                  <h2 className="text-lg font-bold tracking-tight text-[#16273B]">
+                    Action Required & Urgent Attention
+                  </h2>
+                  <span className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-bold text-rose-800">
+                    {needsAttentionAlerts.length}
+                  </span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+                {needsAttentionAlerts.map((alert) => (
+                  <AlertCard
+                    key={alert.id}
+                    alert={alert}
+                    policyTitle={alert.policy?.title}
+                    policyCategory={alert.policy?.category}
+                    policySource={alert.policy?.source}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* 2. Upcoming Deadlines */}
+          {upcomingAlerts.length > 0 && (
+            <section aria-label="Upcoming Deadlines">
+              <div className="mb-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="flex size-7 items-center justify-center rounded-lg bg-[#2563EB]/10 text-[#2563EB]">
+                    <Clock className="size-4" aria-hidden="true" />
+                  </div>
+                  <h2 className="text-lg font-bold tracking-tight text-[#16273B]">
+                    Upcoming Statutory Deadlines
+                  </h2>
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-bold text-[#16273B]">
+                    {upcomingAlerts.length}
+                  </span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+                {upcomingAlerts.map((alert) => (
+                  <AlertCard
+                    key={alert.id}
+                    alert={alert}
+                    policyTitle={alert.policy?.title}
+                    policyCategory={alert.policy?.category}
+                    policySource={alert.policy?.source}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* 3. Completed & Archived */}
+          {completedAlerts.length > 0 && (
+            <section aria-label="Completed Alerts">
+              <div className="mb-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="flex size-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
+                    <CheckCircle2 className="size-4" aria-hidden="true" />
+                  </div>
+                  <h2 className="text-lg font-bold tracking-tight text-[#16273B]">
+                    Completed Milestones
+                  </h2>
+                  <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-800">
+                    {completedAlerts.length}
+                  </span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+                {completedAlerts.map((alert) => (
+                  <AlertCard
+                    key={alert.id}
+                    alert={alert}
+                    policyTitle={alert.policy?.title}
+                    policyCategory={alert.policy?.category}
+                    policySource={alert.policy?.source}
+                  />
+                ))}
+              </div>
+            </section>
           )}
         </div>
       ) : (
-        <div className="flex flex-col gap-3.5">
+        /* Filtered Grid View */
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
           {filteredAlerts.map((alert) => (
             <AlertCard
               key={alert.id}
@@ -190,26 +307,6 @@ export function AlertsList({
           ))}
         </div>
       )}
-
-      {/* Contextual Insights Banner Card */}
-      <div className="relative overflow-hidden rounded-2xl shadow-xs aspect-4/3 sm:aspect-16/9 w-full mt-2">
-        <Image
-          src="/images/policy-office.jpg"
-          alt="Contextual Insights"
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/40 to-transparent flex flex-col justify-end p-5">
-          <span className="text-[10px] font-bold tracking-widest text-white/80 uppercase mb-1">
-            CONTEXTUAL INSIGHTS
-          </span>
-          <h4 className="text-base font-bold text-white leading-snug max-w-[95%]">
-            Stay ahead of the legislative curve with AI-driven compliance tracking.
-          </h4>
-        </div>
-      </div>
     </div>
   );
 }

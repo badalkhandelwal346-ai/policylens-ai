@@ -37,6 +37,7 @@ export function Greeting() {
 
   const hasContext = industry || state;
   const contextParts = [industry, state].filter(Boolean);
+  const businessContext = hasContext ? contextParts.join(" • ") : "Retail • New York";
 
   return (
     <section className="px-4 pt-6 pb-2 md:px-0">
@@ -60,28 +61,18 @@ export function Greeting() {
             {businessName ? `${salutation}, ${businessName}.` : "Welcome to PolicyLens AI."}
           </h1>
 
-          <p className="mt-1.5 text-sm sm:text-base leading-relaxed text-[#243B53]/80 max-w-2xl">
-            {hasContext ? (
-              <>
-                Active policy intelligence for{" "}
-                <span className="font-semibold text-[#16273B]">
-                  {contextParts.join(" • ")}
-                </span>
-                . Highlights relevant regulatory updates and upcoming compliance deadlines.
-              </>
-            ) : (
-              <>
-                Highlights relevant government policies and upcoming statutory deadlines for your business.{" "}
-                <Link
-                  href="/business"
-                  className="font-semibold text-[#2563EB] hover:underline inline-flex items-center gap-1"
-                >
-                  Complete your business profile
-                  <span aria-hidden="true">→</span>
-                </Link>
-              </>
-            )}
-          </p>
+          <div className="mt-1.5 max-w-2xl">
+            <p className="text-sm sm:text-base font-medium text-[#243B53] leading-snug">
+              Active policy intelligence for{" "}
+              <span className="font-semibold text-[#16273B]">
+                {businessContext}
+              </span>
+              .
+            </p>
+            <p className="mt-1 text-xs sm:text-sm font-normal text-slate-500 leading-relaxed">
+              Highlights relevant regulatory updates and upcoming compliance deadlines.
+            </p>
+          </div>
         </div>
 
         <div className="flex items-center gap-2 mt-2 sm:mt-0 shrink-0">
